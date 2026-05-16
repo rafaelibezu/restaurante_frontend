@@ -1,0 +1,85 @@
+<div class="page-shell">
+  <div class="page-header">
+    <div>
+      <h2>Gestión de inventario</h2>
+      <p>Controla stock actual, mínimos y alertas operativas.</p>
+    </div>
+
+    <button class="btn btn-primary" type="button" (click)="abrirNuevo()">Nuevo registro</button>
+  </div>
+
+  <section class="panel">
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Producto</th>
+            <th>Cantidad actual</th>
+            <th>Stock mínimo</th>
+            <th>Estado stock</th>
+            <th>Última actualización</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of inventario; track item.idInventario) {
+            <tr>
+              <td>{{ item.idInventario }}</td>
+              <td class="font-medium text-slate-950">{{ item.nombreProducto }}</td>
+              <td>{{ item.cantidadActual }}</td>
+              <td>{{ item.stockMinimo }}</td>
+              <td>
+                <span [class]="'badge ' + stockClass(item.stockBajo)">
+                  {{ item.stockBajo ? 'Stock bajo' : 'Stock normal' }}
+                </span>
+              </td>
+              <td>{{ item.fechaActualizacion }}</td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-info btn-icon" type="button" title="Editar" (click)="editar(item)">E</button>
+                  <button class="btn btn-danger btn-icon" type="button" title="Eliminar" (click)="eliminar(item.idInventario)">X</button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="text-center text-slate-500">No hay registros de inventario.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+@if (visible) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ editando ? 'Editar inventario' : 'Nuevo inventario' }}</h3>
+      </div>
+
+      <div class="modal-body">
+        <div class="form">
+          <label>
+            Producto
+            <select class="select" [(ngModel)]="form.idProducto">
+              @for (producto of productos; track producto.idProducto) {
+                <option [ngValue]="producto.idProducto">{{ producto.nombre }}</option>
+              }
+            </select>
+          </label>
+
+          <label>Cantidad actual <input class="input" type="number" [(ngModel)]="form.cantidadActual" /></label>
+          <label>Stock mínimo <input class="input" type="number" [(ngModel)]="form.stockMinimo" /></label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="visible = false">Cancelar</button>
+        <button class="btn btn-primary" type="button" (click)="guardar()">Guardar</button>
+      </div>
+    </div>
+  </div>
+}

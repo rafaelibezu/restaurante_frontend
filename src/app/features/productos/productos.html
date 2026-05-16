@@ -1,0 +1,89 @@
+<div class="page-shell">
+  <div class="page-header">
+    <div>
+      <h2>Gestión de productos</h2>
+      <p>Administra platos, bebidas, precios y disponibilidad.</p>
+    </div>
+
+    <button class="btn btn-primary" type="button" (click)="abrirNuevo()">Nuevo producto</button>
+  </div>
+
+  <section class="panel">
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Producto</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (producto of productos; track producto.idProducto) {
+            <tr>
+              <td>{{ producto.idProducto }}</td>
+              <td>
+                <div class="font-medium text-slate-950">{{ producto.nombre }}</div>
+                <div class="text-xs text-slate-500">{{ producto.descripcion }}</div>
+              </td>
+              <td>{{ producto.nombreCategoria }}</td>
+              <td>{{ producto.precio | currency:'PEN':'S/ ' }}</td>
+              <td>{{ producto.stock }}</td>
+              <td>
+                <span [class]="'badge ' + estadoClass(producto.estado)">
+                  {{ producto.estado ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-info btn-icon" type="button" title="Editar" (click)="editar(producto)">E</button>
+                  <button class="btn btn-danger btn-icon" type="button" title="Eliminar" (click)="eliminar(producto.idProducto)">X</button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="text-center text-slate-500">No hay productos registrados.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+@if (visible) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ editando ? 'Editar producto' : 'Nuevo producto' }}</h3>
+      </div>
+
+      <div class="modal-body">
+        <div class="form">
+          <label>Nombre <input class="input" [(ngModel)]="form.nombre" placeholder="Ej. Lomo saltado" /></label>
+          <label>Descripción <input class="input" [(ngModel)]="form.descripcion" placeholder="Descripción del producto" /></label>
+          <label>Precio <input class="input" type="number" [(ngModel)]="form.precio" /></label>
+          <label>Stock <input class="input" type="number" [(ngModel)]="form.stock" /></label>
+          <label>
+            Categoría
+            <select class="select" [(ngModel)]="form.idCategoria">
+              @for (categoria of categorias; track categoria.idCategoria) {
+                <option [ngValue]="categoria.idCategoria">{{ categoria.nombre }}</option>
+              }
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="visible = false">Cancelar</button>
+        <button class="btn btn-primary" type="button" (click)="guardar()">Guardar</button>
+      </div>
+    </div>
+  </div>
+}

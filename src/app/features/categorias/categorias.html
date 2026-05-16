@@ -1,0 +1,79 @@
+<div class="page-shell">
+  <div class="page-header">
+    <div>
+      <h2>Gestión de categorías</h2>
+      <p>Administra las familias de productos del restaurante.</p>
+    </div>
+
+    <button class="btn btn-primary" type="button" (click)="abrirNuevo()">Nueva categoría</button>
+  </div>
+
+  <section class="panel">
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (categoria of categorias; track categoria.idCategoria) {
+            <tr>
+              <td>{{ categoria.idCategoria }}</td>
+              <td class="font-medium text-slate-950">{{ categoria.nombre }}</td>
+              <td>{{ categoria.descripcion }}</td>
+              <td>
+                <span [class]="'badge ' + estadoClass(categoria.estado)">
+                  {{ categoria.estado ? 'Activa' : 'Inactiva' }}
+                </span>
+              </td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-info btn-icon" type="button" title="Editar" (click)="editar(categoria)">E</button>
+                  <button class="btn btn-danger btn-icon" type="button" title="Eliminar" (click)="eliminar(categoria.idCategoria)">X</button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="text-center text-slate-500">No hay categorías registradas.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+@if (visible) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ editando ? 'Editar categoría' : 'Nueva categoría' }}</h3>
+      </div>
+
+      <div class="modal-body">
+        <div class="form">
+          <label>
+            Nombre
+            <input class="input" [(ngModel)]="form.nombre" placeholder="Ej. Bebidas" />
+          </label>
+
+          <label>
+            Descripción
+            <input class="input" [(ngModel)]="form.descripcion" placeholder="Descripción de la categoría" />
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="visible = false">Cancelar</button>
+        <button class="btn btn-primary" type="button" (click)="guardar()">Guardar</button>
+      </div>
+    </div>
+  </div>
+}

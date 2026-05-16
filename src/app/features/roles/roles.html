@@ -1,0 +1,72 @@
+<div class="page-shell">
+  <div class="page-header">
+    <div>
+      <h2>Gestión de roles</h2>
+      <p>Administra los perfiles de acceso del sistema.</p>
+    </div>
+
+    <button class="btn btn-primary" type="button" (click)="abrirNuevo()">Nuevo rol</button>
+  </div>
+
+  <section class="panel">
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (rol of roles; track rol.idRol) {
+            <tr>
+              <td>{{ rol.idRol }}</td>
+              <td class="font-medium text-slate-950">{{ rol.nombreRol }}</td>
+              <td>
+                <span [class]="'badge ' + estadoClass(rol.estado)">
+                  {{ rol.estado ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-info btn-icon" type="button" title="Editar" (click)="editar(rol)">E</button>
+                  <button class="btn btn-danger btn-icon" type="button" title="Eliminar" (click)="eliminar(rol.idRol)">X</button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4" class="text-center text-slate-500">No hay roles registrados.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+@if (visible) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ editando ? 'Editar rol' : 'Nuevo rol' }}</h3>
+      </div>
+
+      <div class="modal-body">
+        <div class="form">
+          <label>
+            Nombre del rol
+            <input class="input" [(ngModel)]="form.nombreRol" placeholder="Ej. Administrador" />
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="visible = false">Cancelar</button>
+        <button class="btn btn-primary" type="button" (click)="guardar()">Guardar</button>
+      </div>
+    </div>
+  </div>
+}

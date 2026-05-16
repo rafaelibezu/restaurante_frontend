@@ -1,0 +1,113 @@
+<div class="page-shell">
+  <div class="page-header">
+    <div>
+      <h2>Gestión de pedidos</h2>
+      <p>Registra pedidos, productos y estados de atención.</p>
+    </div>
+
+    <button class="btn btn-primary" type="button" (click)="abrirNuevo()">Nuevo pedido</button>
+  </div>
+
+  <section class="panel">
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Mesa</th>
+            <th>Mesero</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (pedido of pedidos; track pedido.idPedido) {
+            <tr>
+              <td>#{{ pedido.idPedido }}</td>
+              <td>{{ pedido.fecha }} {{ pedido.hora }}</td>
+              <td>Mesa {{ pedido.numeroMesa }}</td>
+              <td>{{ pedido.nombreUsuario }}</td>
+              <td>{{ pedido.total | currency:'PEN':'S/ ' }}</td>
+              <td><span [class]="'badge ' + estadoClass(pedido.estado)">{{ pedido.estado }}</span></td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-info" type="button" (click)="cambiarEstado(pedido, 'Preparando')">Preparando</button>
+                  <button class="btn btn-success" type="button" (click)="cambiarEstado(pedido, 'Entregado')">Entregado</button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="text-center text-slate-500">No hay pedidos registrados.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+@if (visible) {
+  <div class="modal-backdrop">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title">Nuevo pedido</h3>
+      </div>
+
+      <div class="modal-body">
+        <div class="form">
+          <label>
+            Mesa
+            <select class="select" [(ngModel)]="form.idMesa">
+              @for (mesa of mesas; track mesa.idMesa) {
+                <option [ngValue]="mesa.idMesa">Mesa {{ mesa.numero }}</option>
+              }
+            </select>
+          </label>
+
+          <label>
+            Observación
+            <input class="input" type="text" [(ngModel)]="form.observacion" placeholder="Ej. Sin cebolla" />
+          </label>
+
+          <div class="grid gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 md:grid-cols-[1fr_120px_auto] md:items-end">
+            <label>
+              Producto
+              <select class="select" [(ngModel)]="detalleTemp.idProducto">
+                @for (producto of productos; track producto.idProducto) {
+                  <option [ngValue]="producto.idProducto">{{ producto.nombre }}</option>
+                }
+              </select>
+            </label>
+
+            <label>
+              Cantidad
+              <input class="input" type="number" [(ngModel)]="detalleTemp.cantidad" />
+            </label>
+
+            <button class="btn btn-secondary" type="button" (click)="agregarDetalle()">Agregar</button>
+          </div>
+
+          <div class="space-y-2">
+            @for (detalle of form.detalles; track detalle.idProducto; let i = $index) {
+              <div class="flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2">
+                <span class="text-sm font-medium text-slate-800">{{ nombreProducto(detalle.idProducto) }}</span>
+                <div class="flex items-center gap-3">
+                  <strong class="text-sm text-slate-700">x{{ detalle.cantidad }}</strong>
+                  <button class="text-sm font-semibold text-red-600 hover:text-red-700" type="button" (click)="quitarDetalle(i)">Quitar</button>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="visible = false">Cancelar</button>
+        <button class="btn btn-primary" type="button" (click)="guardar()">Registrar pedido</button>
+      </div>
+    </div>
+  </div>
+}

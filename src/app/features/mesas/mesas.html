@@ -1,0 +1,84 @@
+<div class="page-shell">
+  <div class="page-header">
+    <div>
+      <h2>Gestión de mesas</h2>
+      <p>Administra capacidad, disponibilidad y estado operativo.</p>
+    </div>
+
+    <button class="btn btn-primary" type="button" (click)="abrirNuevo()">Nueva mesa</button>
+  </div>
+
+  <section class="panel">
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Mesa</th>
+            <th>Capacidad</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (mesa of mesas; track mesa.idMesa) {
+            <tr>
+              <td>{{ mesa.idMesa }}</td>
+              <td class="font-medium text-slate-950">Mesa {{ mesa.numero }}</td>
+              <td>{{ mesa.capacidad }} personas</td>
+              <td><span [class]="'badge ' + estadoClass(mesa.estado)">{{ mesa.estado }}</span></td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-info btn-icon" type="button" title="Editar" (click)="editar(mesa)">E</button>
+                  <button class="btn btn-danger btn-icon" type="button" title="Eliminar" (click)="eliminar(mesa.idMesa)">X</button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="text-center text-slate-500">No hay mesas registradas.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+@if (visible) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ editando ? 'Editar mesa' : 'Nueva mesa' }}</h3>
+      </div>
+
+      <div class="modal-body">
+        <div class="form">
+          <label>
+            Número de mesa
+            <input class="input" type="number" [(ngModel)]="form.numero" />
+          </label>
+
+          <label>
+            Capacidad
+            <input class="input" type="number" [(ngModel)]="form.capacidad" />
+          </label>
+
+          <label>
+            Estado
+            <select class="select" [(ngModel)]="form.estado">
+              @for (estado of estados; track estado.value) {
+                <option [ngValue]="estado.value">{{ estado.label }}</option>
+              }
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="visible = false">Cancelar</button>
+        <button class="btn btn-primary" type="button" (click)="guardar()">Guardar</button>
+      </div>
+    </div>
+  </div>
+}

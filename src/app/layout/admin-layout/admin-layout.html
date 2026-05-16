@@ -1,0 +1,72 @@
+<div class="min-h-screen bg-slate-100">
+  <aside class="fixed inset-y-0 left-0 z-30 hidden w-72 border-r border-slate-200 bg-slate-950 text-white lg:block">
+    <div class="flex h-full flex-col">
+      <div class="border-b border-white/10 px-6 py-6">
+        <div class="flex items-center gap-3">
+          <div class="grid h-11 w-11 place-items-center rounded-lg bg-white text-lg font-bold text-slate-950">
+            R
+          </div>
+          <div>
+            <h2 class="text-base font-semibold">Restaurante</h2>
+            <span class="text-xs text-slate-400">Gestión operativa</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="flex-1 space-y-1 px-4 py-5 text-sm">
+        <a href="/dashboard" (click)="irDashboard($event)" [class.bg-white\/10]="esRutaDashboard()" [class.text-white]="esRutaDashboard()" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">
+          Dashboard
+        </a>
+
+        @if (puedeVer(['Administrador', 'Mesero', 'Cocinero', 'Supervisor'])) {
+          <a routerLink="/pedidos" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Pedidos</a>
+        }
+
+        @if (puedeVer(['Administrador', 'Mesero', 'Supervisor'])) {
+          <a routerLink="/mesas" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Mesas</a>
+        }
+
+        @if (puedeVer(['Administrador', 'Supervisor'])) {
+          <a routerLink="/productos" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Productos</a>
+          <a routerLink="/categorias" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Categorías</a>
+          <a routerLink="/inventario" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Inventario</a>
+        }
+
+        @if (puedeVer(['Administrador', 'Cajero', 'Supervisor'])) {
+          <a routerLink="/ventas" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Ventas</a>
+        }
+
+        @if (puedeVer(['Administrador'])) {
+          <a routerLink="/usuarios" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Usuarios</a>
+          <a routerLink="/roles" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Roles</a>
+        }
+      </nav>
+
+      <div class="border-t border-white/10 p-4">
+        <div class="rounded-lg bg-white/5 p-3">
+          <p class="text-sm font-medium">{{ usuario?.nombre || 'Usuario' }}</p>
+          <p class="mt-1 text-xs text-slate-400">{{ usuario?.rol || 'Rol no asignado' }}</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="lg:pl-72">
+    <header class="sticky top-0 z-20 border-b border-slate-200 bg-white/95 px-4 py-4 shadow-sm backdrop-blur sm:px-6 lg:px-8">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 class="text-xl font-semibold tracking-tight text-slate-950">Sistema Restaurante</h1>
+          <p class="mt-1 text-sm text-slate-500">Panel administrativo para pedidos, ventas e inventario</p>
+        </div>
+
+        <button class="btn btn-secondary" type="button" (click)="logout()">
+          Cerrar sesión
+        </button>
+      </div>
+    </header>
+
+    <main class="px-4 py-6 sm:px-6 lg:px-8">
+      <router-outlet />
+    </main>
+  </div>
+</div>

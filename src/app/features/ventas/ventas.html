@@ -1,0 +1,78 @@
+<div class="page-shell">
+  <div class="page-header">
+    <div>
+      <h2>Gestión de ventas</h2>
+      <p>Consulta pagos registrados y comprobantes de pedidos.</p>
+    </div>
+
+    <button class="btn btn-primary" type="button" (click)="abrirNuevo()">Registrar venta</button>
+  </div>
+
+  <section class="panel">
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Pedido</th>
+            <th>Cajero</th>
+            <th>Método pago</th>
+            <th>Total</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (venta of ventas; track venta.idVenta) {
+            <tr>
+              <td>{{ venta.idVenta }}</td>
+              <td>{{ venta.fecha }}</td>
+              <td>Pedido #{{ venta.idPedido }}</td>
+              <td>{{ venta.nombreUsuario }}</td>
+              <td>{{ venta.metodoPago }}</td>
+              <td>{{ venta.total | currency:'PEN':'S/ ' }}</td>
+              <td><span [class]="'badge ' + estadoClass(venta.estado)">{{ venta.estado }}</span></td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="text-center text-slate-500">No hay ventas registradas.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+@if (visible) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Registrar venta</h3>
+      </div>
+
+      <div class="modal-body">
+        <div class="form">
+          <label>
+            ID del pedido
+            <input class="input" type="number" [(ngModel)]="form.idPedido" placeholder="Ej. 1" />
+          </label>
+
+          <label>
+            Método de pago
+            <select class="select" [(ngModel)]="form.metodoPago">
+              @for (metodo of metodosPago; track metodo.value) {
+                <option [ngValue]="metodo.value">{{ metodo.label }}</option>
+              }
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="visible = false">Cancelar</button>
+        <button class="btn btn-primary" type="button" (click)="registrar()">Registrar</button>
+      </div>
+    </div>
+  </div>
+}

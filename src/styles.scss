@@ -1,1 +1,170 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: #f5f7fb;
+  color: #111827;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+@layer components {
+  .page-shell {
+    @apply space-y-6;
+  }
+
+  .page-header {
+    @apply flex flex-col gap-4 rounded-lg border border-slate-200 bg-white px-5 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between;
+  }
+
+  .page-header h2 {
+    @apply text-xl font-semibold tracking-tight text-slate-950;
+  }
+
+  .page-header p,
+  .subtitle {
+    @apply mt-1 text-sm text-slate-500;
+  }
+
+  .panel {
+    @apply overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm;
+  }
+
+  .table-wrap {
+    @apply overflow-x-auto;
+  }
+
+  .data-table {
+    @apply min-w-full divide-y divide-slate-200 text-sm;
+  }
+
+  .data-table thead {
+    @apply bg-slate-50;
+  }
+
+  .data-table th {
+    @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500;
+  }
+
+  .data-table td {
+    @apply px-4 py-3 align-middle text-slate-700;
+  }
+
+  .data-table tbody {
+    @apply divide-y divide-slate-100 bg-white;
+  }
+
+  .data-table tbody tr {
+    @apply transition-colors hover:bg-slate-50;
+  }
+
+  .btn {
+    @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-transparent px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-primary {
+    @apply bg-slate-900 text-white hover:bg-slate-800;
+  }
+
+  .btn-secondary {
+    @apply border-slate-300 bg-white text-slate-700 hover:bg-slate-50;
+  }
+
+  .btn-danger {
+    @apply bg-red-600 text-white hover:bg-red-700;
+  }
+
+  .btn-info {
+    @apply bg-cyan-700 text-white hover:bg-cyan-800;
+  }
+
+  .btn-success {
+    @apply bg-emerald-700 text-white hover:bg-emerald-800;
+  }
+
+  .btn-icon {
+    @apply h-9 w-9 rounded-md p-0;
+  }
+
+  .actions {
+    @apply flex flex-wrap items-center gap-2;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold;
+  }
+
+  .badge-success {
+    @apply bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200;
+  }
+
+  .badge-warning {
+    @apply bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200;
+  }
+
+  .badge-danger {
+    @apply bg-red-50 text-red-700 ring-1 ring-inset ring-red-200;
+  }
+
+  .badge-info {
+    @apply bg-cyan-50 text-cyan-700 ring-1 ring-inset ring-cyan-200;
+  }
+
+  .form {
+    @apply grid gap-4;
+  }
+
+  .form label {
+    @apply text-sm font-medium text-slate-700;
+  }
+
+  .input,
+  .select {
+    @apply mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-200;
+  }
+
+  .modal-backdrop {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 p-4;
+  }
+
+  .modal {
+    @apply w-full max-w-lg rounded-lg border border-slate-200 bg-white shadow-xl;
+  }
+
+  .modal-lg {
+    @apply max-w-2xl;
+  }
+
+  .modal-header {
+    @apply border-b border-slate-200 px-5 py-4;
+  }
+
+  .modal-title {
+    @apply text-lg font-semibold text-slate-950;
+  }
+
+  .modal-body {
+    @apply px-5 py-5;
+  }
+
+  .modal-footer {
+    @apply flex justify-end gap-3 border-t border-slate-200 px-5 py-4;
+  }
+}
