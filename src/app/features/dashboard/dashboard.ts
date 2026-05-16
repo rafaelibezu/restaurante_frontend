@@ -1,8 +1,7 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import Plotly, { Config, Data, Layout } from 'plotly.js-dist-min';
 import { DashboardService } from '../../core/services/dashboard';
 import { DashboardResponse } from '../../core/models/dashboard-response';
 import { Venta } from '../../core/models/venta';
@@ -19,22 +18,24 @@ import { ProductoService } from '../../core/services/producto';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
-export class Dashboard implements OnInit, OnDestroy {
-
-  @ViewChild('ventasChart') ventasChart?: ElementRef<HTMLDivElement>;
-  @ViewChild('pedidosChart') pedidosChart?: ElementRef<HTMLDivElement>;
-  @ViewChild('mesasChart') mesasChart?: ElementRef<HTMLDivElement>;
-  @ViewChild('stockChart') stockChart?: ElementRef<HTMLDivElement>;
+export class Dashboard implements OnInit {
 
   data?: DashboardResponse;
   ventas: Venta[] = [];
   pedidos: Pedido[] = [];
   productos: Producto[] = [];
 
-  private readonly plotlyConfig: Partial<Config> = {
-    displayModeBar: false,
-    responsive: true
-  };
+  ventasGrafico: {
+    labels: string[];
+    values: number[];
+    points: string;
+    area: string;
+    max: number;
+  } = this.graficoLineasVacio();
+
+  pedidosGrafico: { label: string; value: number; color: string; height: number }[] = [];
+  mesasGrafico = { ocupadas: 0, disponibles: 0, total: 0, ocupadasPct: 0, disponiblesPct: 0 };
+  stockGrafico: { label: string; value: number; width: number }[] = [];
 
   constructor(
     private dashboardService: DashboardService,
@@ -55,43 +56,28 @@ export class Dashboard implements OnInit, OnDestroy {
         this.ventas = response.ventas;
         this.pedidos = response.pedidos;
         this.productos = response.productos;
-        requestAnimationFrame(() => this.renderizarGraficos());
+        this.prepararGraficos();
       },
       error: error => console.error(error)
     });
   }
 
-  ngOnDestroy(): void {
-    this.limpiarGraficos();
-  }
-
-  private renderizarGraficos(): void {
+  private prepararGraficos(): void {
     if (!this.data) return;
 
-    this.crearGrafico(this.ventasChart, this.dataVentas(), this.layoutBase('Ventas diarias'));
-    this.crearGrafico(this.pedidosChart, this.dataPedidos(), this.layoutBase('Cantidad de pedidos'));
-    this.crearGrafico(this.mesasChart, this.dataMesas(), this.layoutCircular());
-    this.crearGrafico(this.stockChart, this.dataStock(), this.layoutBase('Unidades disponibles', true));
+    this.ventasGrafico = this.crearVentasGrafico();
+    this.pedidosGrafico = this.crearPedidosGrafico();
+    this.mesasGrafico = this.crearMesasGrafico();
+    this.stockGrafico = this.crearStockGrafico();
   }
 
-  private limpiarGraficos(): void {
-    [this.ventasChart, this.pedidosChart, this.mesasChart, this.stockChart].forEach(ref => {
-      if (ref?.nativeElement) {
-        Plotly.purge(ref.nativeElement);
-      }
-    });
-  }
-
-  private crearGrafico(
-    ref: ElementRef<HTMLDivElement> | undefined,
-    data: Data[],
-    layout: Partial<Layout>
-  ): void {
-    if (!ref?.nativeElement) return;
-    Plotly.react(ref.nativeElement, data, layout, this.plotlyConfig);
-  }
-
-  private dataVentas(): Data[] {
+  private crearVentasGrafico(): {
+    labels: string[];
+    values: number[];
+    points: string;
+    area: string;
+    max: number;
+  } {
     const dias = this.ultimosDias(7);
     const ventasPorDia = new Map<string, number>();
 
@@ -100,106 +86,87 @@ export class Dashboard implements OnInit, OnDestroy {
       ventasPorDia.set(key, (ventasPorDia.get(key) ?? 0) + Number(venta.total ?? 0));
     });
 
-    return [{
-      type: 'scatter',
-      mode: 'lines+markers',
-      name: 'Ventas',
-      x: dias.map(dia => dia.label),
-      y: dias.map(dia => ventasPorDia.get(dia.key) ?? 0),
-      fill: 'tozeroy',
-      fillcolor: 'rgba(20, 184, 166, 0.16)',
-      line: { color: '#0f766e', width: 3, shape: 'spline' },
-      marker: { color: '#0f766e', size: 8 },
-      hovertemplate: 'S/ %{y:.2f}<extra></extra>'
-    }];
+    const values = dias.map(dia => ventasPorDia.get(dia.key) ?? 0);
+    const labels = dias.map(dia => dia.label);
+    const max = Math.max(...values, 1);
+    const points = values
+      .map((value, index) => {
+        const x = 40 + (index * 700) / Math.max(values.length - 1, 1);
+        const y = 220 - (value / max) * 170;
+        return `${x},${y}`;
+      })
+      .join(' ');
+
+    return {
+      labels,
+      values,
+      points,
+      area: `40,220 ${points} 740,220`,
+      max
+    };
   }
 
-  private dataPedidos(): Data[] {
-    const estados = ['Pendiente', 'En Preparacion', 'Entregado', 'Cancelado'];
+  private crearPedidosGrafico(): { label: string; value: number; color: string; height: number }[] {
+    const estados = [
+      { label: 'Pendiente', color: '#d97706' },
+      { label: 'En Preparacion', color: '#0891b2' },
+      { label: 'Entregado', color: '#059669' },
+      { label: 'Cancelado', color: '#dc2626' }
+    ];
     const conteo = new Map<string, number>();
 
     this.pedidos.forEach(pedido => {
-      conteo.set(pedido.estado, (conteo.get(pedido.estado) ?? 0) + 1);
+      const estado = this.normalizarEstado(pedido.estado);
+      conteo.set(estado, (conteo.get(estado) ?? 0) + 1);
     });
 
-    return [{
-      type: 'bar',
-      name: 'Pedidos',
-      x: estados,
-      y: estados.map(estado => conteo.get(estado) ?? 0),
-      marker: { color: ['#d97706', '#0891b2', '#059669', '#dc2626'] },
-      hovertemplate: '%{y} pedidos<extra></extra>'
-    }];
+    const values = estados.map(estado => conteo.get(this.normalizarEstado(estado.label)) ?? 0);
+    const max = Math.max(...values, 1);
+
+    return estados.map((estado, index) => ({
+      ...estado,
+      value: values[index],
+      height: Math.max((values[index] / max) * 100, values[index] ? 8 : 2)
+    }));
   }
 
-  private dataMesas(): Data[] {
-    return [{
-      type: 'pie',
-      labels: ['Ocupadas', 'Disponibles'],
-      values: [this.data?.mesasOcupadas ?? 0, this.data?.mesasDisponibles ?? 0],
-      hole: 0.62,
-      marker: { colors: ['#0891b2', '#94a3b8'] },
-      textinfo: 'label+percent',
-      hovertemplate: '%{label}: %{value}<extra></extra>'
-    }];
+  private crearMesasGrafico(): { ocupadas: number; disponibles: number; total: number; ocupadasPct: number; disponiblesPct: number } {
+    const ocupadas = this.data?.mesasOcupadas ?? 0;
+    const disponibles = this.data?.mesasDisponibles ?? 0;
+    const total = Math.max(ocupadas + disponibles, 1);
+
+    return {
+      ocupadas,
+      disponibles,
+      total: ocupadas + disponibles,
+      ocupadasPct: Math.round((ocupadas / total) * 100),
+      disponiblesPct: Math.round((disponibles / total) * 100)
+    };
   }
 
-  private dataStock(): Data[] {
+  private crearStockGrafico(): { label: string; value: number; width: number }[] {
     const productos = [...this.productos]
       .sort((a, b) => a.stock - b.stock)
       .slice(0, 6);
 
-    const labels = productos.length ? productos.map(producto => producto.nombre) : ['Stock bajo'];
-    const values = productos.length ? productos.map(producto => producto.stock) : [this.data?.productosStockBajo ?? 0];
+    const items = productos.length
+      ? productos.map(producto => ({ label: producto.nombre, value: producto.stock }))
+      : [{ label: 'Productos con stock bajo', value: this.data?.productosStockBajo ?? 0 }];
+    const max = Math.max(...items.map(item => item.value), 1);
 
-    return [{
-      type: 'bar',
-      orientation: 'h',
-      name: 'Stock',
-      x: values,
-      y: labels,
-      marker: { color: '#e11d48' },
-      hovertemplate: '%{x} unidades<extra></extra>'
-    }];
+    return items.map(item => ({
+      ...item,
+      width: Math.max((item.value / max) * 100, item.value ? 8 : 2)
+    }));
   }
 
-  private layoutBase(tituloEjeY: string, horizontal = false): Partial<Layout> {
+  private graficoLineasVacio(): { labels: string[]; values: number[]; points: string; area: string; max: number } {
     return {
-      autosize: true,
-      margin: { l: horizontal ? 120 : 44, r: 24, t: 12, b: 48 },
-      paper_bgcolor: '#ffffff',
-      plot_bgcolor: '#ffffff',
-      font: {
-        family: 'Inter, sans-serif',
-        color: '#475569'
-      },
-      showlegend: false,
-      xaxis: horizontal
-        ? { title: { text: tituloEjeY }, gridcolor: '#e2e8f0', zerolinecolor: '#cbd5e1' }
-        : { gridcolor: '#f1f5f9', zerolinecolor: '#cbd5e1' },
-      yaxis: horizontal
-        ? { automargin: true, gridcolor: '#f1f5f9' }
-        : { title: { text: tituloEjeY }, gridcolor: '#e2e8f0', zerolinecolor: '#cbd5e1', rangemode: 'tozero' }
-    };
-  }
-
-  private layoutCircular(): Partial<Layout> {
-    return {
-      autosize: true,
-      margin: { l: 24, r: 24, t: 12, b: 24 },
-      paper_bgcolor: '#ffffff',
-      plot_bgcolor: '#ffffff',
-      font: {
-        family: 'Inter, sans-serif',
-        color: '#475569'
-      },
-      showlegend: true,
-      legend: {
-        orientation: 'h',
-        x: 0.5,
-        xanchor: 'center',
-        y: -0.05
-      }
+      labels: [],
+      values: [],
+      points: '',
+      area: '',
+      max: 1
     };
   }
 
@@ -219,5 +186,13 @@ export class Dashboard implements OnInit, OnDestroy {
   private fechaKey(fecha: string): string {
     const date = new Date(fecha);
     return Number.isNaN(date.getTime()) ? fecha.slice(0, 10) : date.toISOString().slice(0, 10);
+  }
+
+  private normalizarEstado(estado: string): string {
+    return estado
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .toUpperCase();
   }
 }
