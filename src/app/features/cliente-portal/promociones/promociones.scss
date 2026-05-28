@@ -2,16 +2,145 @@
   display: block;
 }
 
+.promos-page {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(214, 168, 79, 0.18), transparent 28%),
+    linear-gradient(180deg, #f7f4ef 0%, #fffaf2 100%);
+}
+
+.promos-hero {
+  background:
+    linear-gradient(90deg, rgba(15, 23, 42, 0.92), rgba(23, 33, 63, 0.78)),
+    url('/assets/img/restaurante_banner.jpg') center / cover no-repeat;
+}
+
+.promo-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-height: 76px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 1rem;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+}
+
+.promo-chip span {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 1rem;
+  background: #17213f;
+  font-size: 1.35rem;
+}
+
+.promo-chip strong {
+  color: #17213f;
+  font-size: 0.95rem;
+}
+
 .promo-card {
+  --accent: #d6a84f;
+  --accent-soft: rgba(214, 168, 79, 0.14);
+  --accent-dark: #9a6b12;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-top: 5px solid var(--accent);
   border-radius: 2rem;
   background: #ffffff;
   padding: 1.75rem;
   box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  transition: transform .25s ease, box-shadow .25s ease;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
 
-  &:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.14);
+.promo-card::before {
+  content: '';
+  position: absolute;
+  inset: -60px -80px auto auto;
+  width: 180px;
+  height: 180px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  pointer-events: none;
+}
+
+.promo-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--accent) 38%, #e2e8f0);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.14);
+}
+
+.promo-card.birthday {
+  --accent: #db2777;
+  --accent-soft: rgba(219, 39, 119, 0.13);
+  --accent-dark: #9d174d;
+}
+
+.promo-card.loyal {
+  --accent: #0f766e;
+  --accent-soft: rgba(15, 118, 110, 0.13);
+  --accent-dark: #115e59;
+}
+
+.promo-card.lunch {
+  --accent: #d97706;
+  --accent-soft: rgba(217, 119, 6, 0.15);
+  --accent-dark: #92400e;
+}
+
+.promo-card.dinner {
+  --accent: #4338ca;
+  --accent-soft: rgba(67, 56, 202, 0.13);
+  --accent-dark: #3730a3;
+}
+
+.promo-icon {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  place-items: center;
+  border-radius: 1.25rem;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-size: 1.75rem;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.discount-pill {
+  position: relative;
+  z-index: 1;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #ffffff;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 900;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+}
+
+.promo-label {
+  color: var(--accent-dark);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.promo-action {
+  background: #17213f;
+  color: #ffffff;
+}
+
+.promo-card:hover .promo-action {
+  background: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .promo-card {
+    border-radius: 1.5rem;
+    padding: 1.25rem;
   }
 }
