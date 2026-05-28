@@ -13,6 +13,13 @@ export interface PublicPromocion {
   estado: boolean;
 }
 
+export interface PublicMesa {
+  idMesa: number;
+  numero: number;
+  capacidad: number;
+  estado: string;
+}
+
 export interface PublicClienteRequest {
   nombre: string;
   apellido: string;
@@ -72,4 +79,9 @@ export class PublicService {
   crearReserva(data: PublicReservaRequest): Observable<PublicReservaResponse> {
     return this.http.post<PublicReservaResponse>(`${this.apiUrl}/reservas`, data);
   }
+
+  listarMesasDisponibles(): Observable<PublicMesa[]> {
+    return this.http.get<PublicMesa[]>(`${this.apiUrl}/mesas/disponibles`);
+  }
+
 }

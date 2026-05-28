@@ -1,7 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { PublicService } from '../../../core/services/public';
+import { PublicService, PublicMesa } from '../../../core/services/public';
+import Swal from 'sweetalert2';
+import { finalize, switchMap } from 'rxjs';
+
 
 @Component({
   selector: 'app-reservar',
@@ -11,7 +14,11 @@ import { PublicService } from '../../../core/services/public';
   styleUrl: './reservar.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Reservar {
+
+export class Reservar implements OnInit {
+
+  mesasDisponibles: PublicMesa[] = [];
+  idMesaSeleccionada: number | null = null;
 
   cargando = false;
   exito = '';
@@ -38,24 +45,74 @@ export class Reservar {
   constructor(
     private publicService: PublicService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
+
+  ngOnInit(): void {
+    this.cargarMesasDisponibles();
+  }
+
+  cargarMesasDisponibles(): void {
+    this.publicService.listarMesasDisponibles().subscribe({
+      next: data => {
+        this.mesasDisponibles = data;
+        this.asignarMesaSugerida();
+        this.cdr.markForCheck();
+      },
+      error: error => {
+        console.error(error);
+        this.error = 'No se pudieron cargar las mesas disponibles.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  asignarMesaSugerida(): void {
+    const mesaSugerida = this.mesasDisponibles.find(
+      mesa => mesa.capacidad >= this.reserva.cantidadPersonas
+    );
+
+    this.idMesaSeleccionada = mesaSugerida?.idMesa ?? null;
+  }
 
   enviarReserva(): void {
     this.exito = '';
     this.error = '';
 
-    if (!this.cliente.nombre || !this.cliente.telefono || !this.reserva.fechaReserva || !this.reserva.horaReserva) {
+    if (
+      !this.cliente.nombre ||
+      !this.cliente.telefono ||
+      !this.reserva.fechaReserva ||
+      !this.reserva.horaReserva
+    ) {
       this.error = 'Completa los campos obligatorios para registrar tu reserva.';
+      this.cdr.markForCheck();
+      return;
+    }
+
+    const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (this.cliente.correo && !correoValido.test(this.cliente.correo)) {
+      this.error = 'Ingresa un correo válido, por ejemplo: cliente@gmail.com';
+      this.cdr.markForCheck();
+      return;
+    }
+
+    this.asignarMesaSugerida();
+
+    if (!this.idMesaSeleccionada) {
+      this.error = 'No hay mesas disponibles para la cantidad de personas indicada.';
+      this.cdr.markForCheck();
       return;
     }
 
     this.cargando = true;
+    this.cdr.markForCheck();
 
-    this.publicService.registrarCliente(this.cliente).subscribe({
-      next: clienteCreado => {
+    this.publicService.registrarCliente(this.cliente).pipe(
+      switchMap(clienteCreado => {
         const reservaRequest = {
           idCliente: clienteCreado.idCliente,
-          idMesa: 2,
+          idMesa: this.idMesaSeleccionada!,
           idUsuario: 1,
           fechaReserva: this.reserva.fechaReserva,
           horaReserva: `${this.reserva.horaReserva}:00`,
@@ -64,24 +121,40 @@ export class Reservar {
           observacion: this.reserva.observacion || 'Reserva desde portal cliente'
         };
 
-        this.publicService.crearReserva(reservaRequest).subscribe({
-          next: () => {
-            this.cargando = false;
-            this.exito = 'Tu reserva fue registrada correctamente. El restaurante la confirmará pronto.';
-            this.limpiarFormulario();
-            this.cdr.detectChanges();
-          },
-          error: () => {
-            this.cargando = false;
-            this.error = 'El cliente se registró, pero hubo un problema al crear la reserva.';
-            this.cdr.detectChanges();
-          }
+        return this.publicService.crearReserva(reservaRequest);
+      }),
+      finalize(() => {
+        this.cargando = false;
+        this.cdr.markForCheck();
+      })
+    ).subscribe({
+      next: reservaCreada => {
+        this.limpiarFormulario();
+
+        this.cargando = false;
+        this.cdr.markForCheck();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Reserva registrada',
+          text: `Tu reserva #${reservaCreada.idReserva} fue registrada correctamente. El restaurante la confirmará pronto.`,
+          confirmButtonText: 'Entendido',
+          confirmButtonColor: '#17213f'
         });
       },
-      error: () => {
+      error: error => {
+        console.error(error);
+
         this.cargando = false;
-        this.error = 'No se pudo registrar el cliente. Verifica si el teléfono o correo ya existen.';
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
+
+        Swal.fire({
+          icon: 'error',
+          title: 'No se pudo registrar',
+          text: 'Ocurrió un problema al registrar la reserva. Revisa los datos e inténtalo nuevamente.',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#17213f'
+        });
       }
     });
   }
@@ -104,5 +177,11 @@ export class Reservar {
       cantidadPersonas: 2,
       observacion: ''
     };
+  }
+
+  mesaSeleccionada() {
+    return this.mesasDisponibles.find(
+      mesa => mesa.idMesa === this.idMesaSeleccionada
+    );
   }
 }

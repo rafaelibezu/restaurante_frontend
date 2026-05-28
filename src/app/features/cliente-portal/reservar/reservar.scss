@@ -2,6 +2,22 @@
   display: block;
 }
 
+.reservation-hero {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(90deg, rgba(15, 23, 42, 0.88) 0%, rgba(15, 23, 42, 0.7) 48%, rgba(15, 23, 42, 0.28) 100%),
+    url('/assets/img/restaurante_banner.jpg') center / cover no-repeat;
+}
+
+.reservation-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 18% 22%, rgba(214, 168, 79, 0.32), transparent 34%);
+}
+
 .reservation-card {
   display: grid;
   gap: 1.25rem;
@@ -71,9 +87,11 @@ button {
   gap: 1rem;
   align-items: flex-start;
   border-radius: 1.5rem;
-  background: white;
+  background: rgba(255, 255, 255, 0.13);
   padding: 1.25rem;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, .06);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, .22);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
 
   span {
     display: grid;
@@ -81,17 +99,19 @@ button {
     height: 48px;
     place-items: center;
     border-radius: 1rem;
-    background: #17213f;
-    color: white;
+    background: #d6a84f;
+    color: #17213f;
+    font-size: .8rem;
+    font-weight: 900;
   }
 
   strong {
-    color: #17213f;
+    color: #ffffff;
   }
 
   p {
     margin: .25rem 0 0;
-    color: #64748b;
+    color: #e2e8f0;
   }
 }
 
