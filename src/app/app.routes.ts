@@ -111,6 +111,11 @@ export const routes: Routes = [
         path: 'notificaciones',
         loadComponent: () =>
           import('./features/notificaciones/notificaciones').then(m => m.Notificaciones)
+      },
+      {
+        path: 'clientes',
+        loadComponent: () =>
+          import('./features/clientes/clientes').then(m => m.Clientes)
       }
     ]
   },

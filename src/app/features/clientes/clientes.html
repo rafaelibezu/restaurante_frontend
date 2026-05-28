@@ -1,0 +1,241 @@
+<div class="page-shell">
+  <div class="page-header">
+    <div>
+      <span class="text-xs font-bold uppercase tracking-wide text-cyan-700">CRM clientes</span>
+      <h2>Gestion de clientes</h2>
+      <p>Consulta perfiles, preferencias, alergias e historial de consumo.</p>
+    </div>
+
+    <label class="w-full text-sm font-semibold text-slate-700 sm:w-80">
+      Buscar
+      <input
+        class="input"
+        type="text"
+        [(ngModel)]="busqueda"
+        (ngModelChange)="aplicarBusqueda()"
+        placeholder="Cliente, telefono o correo..."
+      />
+    </label>
+  </div>
+
+  <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <article class="kpi-card">
+      <span>Total clientes</span>
+      <strong>{{ clientes.length }}</strong>
+      <p>Registrados en CRM</p>
+    </article>
+
+    <article class="kpi-card success">
+      <span>Activos</span>
+      <strong>{{ totalActivos() }}</strong>
+      <p>Clientes habilitados</p>
+    </article>
+
+    <article class="kpi-card warning">
+      <span>Con preferencias</span>
+      <strong>{{ totalConPreferencias() }}</strong>
+      <p>Atencion personalizada</p>
+    </article>
+
+    <article class="kpi-card danger">
+      <span>Con alergias</span>
+      <strong>{{ totalConAlergias() }}</strong>
+      <p>Datos importantes</p>
+    </article>
+  </section>
+
+  <section class="panel">
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Contacto</th>
+            <th>Cumpleanos</th>
+            <th>Preferencias</th>
+            <th>Alergias</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @if (cargandoListado) {
+            <tr>
+              <td colspan="8" class="table-loading-cell">
+                <div class="table-loading">
+                  <span class="loading-spinner"></span>
+                  <span>Cargando clientes...</span>
+                </div>
+              </td>
+            </tr>
+          } @else {
+            @for (cliente of clientesFiltrados; track cliente.idCliente) {
+              <tr>
+                <td class="font-semibold text-slate-950">#{{ cliente.idCliente }}</td>
+
+                <td>
+                  <div class="font-medium text-slate-950">{{ cliente.nombre }} {{ cliente.apellido }}</div>
+                  <div class="text-xs text-slate-500">
+                    Registrado: {{ cliente.fechaRegistro | date:'dd/MM/yyyy' }}
+                  </div>
+                </td>
+
+                <td>
+                  <div class="font-semibold text-slate-950">{{ cliente.telefono }}</div>
+                  <div class="text-xs text-slate-500">{{ cliente.correo || 'Sin correo' }}</div>
+                </td>
+
+                <td>
+                  {{ cliente.fechaNacimiento ? (cliente.fechaNacimiento | date:'dd/MM/yyyy') : 'No registrado' }}
+                </td>
+
+                <td>
+                  <span class="line-clamp-2 max-w-56 text-sm text-slate-500">
+                    {{ cliente.preferencias || 'Sin preferencias' }}
+                  </span>
+                </td>
+
+                <td>
+                  @if (cliente.alergias) {
+                    <span class="allergy-badge">{{ cliente.alergias }}</span>
+                  } @else {
+                    <span class="text-sm text-slate-400">Sin alergias</span>
+                  }
+                </td>
+
+                <td>
+                  <span [class]="'badge ' + estadoClass(cliente)">
+                    {{ estadoCliente(cliente) }}
+                  </span>
+                </td>
+
+                <td>
+                  <div class="actions">
+                    <button class="btn btn-info btn-icon" type="button" title="Ver historial" aria-label="Ver historial" (click)="verHistorial(cliente)">
+                      <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M3 3v18h18" />
+                        <path d="m7 15 4-4 3 3 5-7" />
+                      </svg>
+                    </button>
+
+                    <button class="btn btn-danger btn-icon" type="button" title="Desactivar" aria-label="Desactivar" (click)="eliminar(cliente)">
+                      <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M3 6h18" />
+                        <path d="M8 6V4h8v2" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M10 11v5" />
+                        <path d="M14 11v5" />
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="8" class="py-8 text-center text-slate-500">
+                  No hay clientes para mostrar.
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+@if (visibleHistorial) {
+  <div class="modal-backdrop">
+    <div class="modal modal-xl">
+      <div class="modal-header flex items-center justify-between gap-4">
+        <h3 class="modal-title">Historial de consumo</h3>
+        <button class="btn btn-secondary btn-icon" type="button" title="Cerrar" aria-label="Cerrar" (click)="cerrarHistorial()">
+          <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body max-h-[72vh] overflow-y-auto">
+        @if (cargandoHistorial) {
+          <div class="table-loading py-8">
+            <span class="loading-spinner"></span>
+            <span>Cargando historial...</span>
+          </div>
+        }
+
+        @if (!cargandoHistorial && historial) {
+          <div class="space-y-5">
+            <section class="rounded-lg bg-slate-950 p-5 text-white">
+              <span class="text-xs font-bold uppercase tracking-wide text-cyan-200">Cliente CRM</span>
+              <h3 class="mt-2 text-2xl font-semibold">{{ historial.nombreCliente }}</h3>
+            </section>
+
+            <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              <article class="mini-kpi">
+                <span>Pedidos</span>
+                <strong>{{ historial.cantidadPedidos }}</strong>
+              </article>
+
+              <article class="mini-kpi">
+                <span>Total gastado</span>
+                <strong>{{ historial.totalGastado | currency:'PEN':'S/ ' }}</strong>
+              </article>
+
+              <article class="mini-kpi">
+                <span>Ticket promedio</span>
+                <strong>{{ historial.ticketPromedio | currency:'PEN':'S/ ' }}</strong>
+              </article>
+
+              <article class="mini-kpi">
+                <span>Ultima visita</span>
+                <strong class="text-base">
+                  {{ historial.ultimaVisita ? (historial.ultimaVisita | date:'dd/MM/yyyy HH:mm') : 'Sin visitas' }}
+                </strong>
+              </article>
+            </section>
+
+            <section>
+              <h4 class="mb-3 text-base font-semibold text-slate-950">Pedidos asociados</h4>
+
+              @if (historial.pedidos.length === 0) {
+                <div class="rounded-md border border-slate-200 bg-slate-50 p-5 text-center text-sm text-slate-500">
+                  Este cliente aun no tiene pedidos asociados.
+                </div>
+              }
+
+              @if (historial.pedidos.length > 0) {
+                <div class="grid gap-3">
+                  @for (pedido of historial.pedidos; track pedido.idPedido) {
+                    <article class="rounded-md border border-slate-200 bg-slate-50 p-4">
+                      <div class="flex flex-col justify-between gap-3 sm:flex-row">
+                        <div>
+                          <strong class="text-slate-950">Pedido #{{ pedido.idPedido }}</strong>
+                          <p class="m-0 mt-1 text-sm text-slate-500">
+                            {{ pedido.fecha }} - {{ pedido.hora }} - Mesa {{ pedido.numeroMesa }}
+                          </p>
+                        </div>
+
+                        <div class="sm:text-right">
+                          <strong class="text-slate-950">
+                            {{ pedido.total | currency:'PEN':'S/ ' }}
+                          </strong>
+                          <p class="m-0 mt-1 text-sm text-slate-500">
+                            {{ pedido.estado }}
+                          </p>
+                        </div>
+                      </div>
+                    </article>
+                  }
+                </div>
+              }
+            </section>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
