@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { delay } from 'rxjs';
 
 import { Usuario, UsuarioRequest } from '../../core/models/usuario';
 import { Rol } from '../../core/models/rol';
@@ -18,6 +19,7 @@ export class Usuarios implements OnInit {
 
   usuarios: Usuario[] = [];
   roles: Rol[] = [];
+  cargandoListado = false;
 
   visible = false;
   editando = false;
@@ -44,9 +46,17 @@ export class Usuarios implements OnInit {
   }
 
   listar(): void {
-    this.usuarioService.listar().subscribe({
+    this.cargandoListado = true;
+    this.cdr.detectChanges();
+
+    this.usuarioService.listar().pipe(delay(2000)).subscribe({
       next: data => {
         this.usuarios = data;
+        this.cargandoListado = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.cargandoListado = false;
         this.cdr.detectChanges();
       }
     });

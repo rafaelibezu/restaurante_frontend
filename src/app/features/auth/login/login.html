@@ -1,25 +1,23 @@
-<div class="min-h-screen bg-slate-950 px-4 py-10 text-slate-950">
-  <div class="mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl items-center gap-10 lg:grid-cols-[1fr_420px]">
-    <section class="hidden text-white lg:block">
-      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">Restaurante Lima</p>
-      <h1 class="mt-4 max-w-2xl text-4xl font-semibold tracking-tight">
-        Plataforma administrativa para pedidos, ventas e inventario.
-      </h1>
-      <p class="mt-5 max-w-xl text-base leading-7 text-slate-300">
-        Controla la operación diaria con una interfaz sobria, rápida y preparada para crecer con tu tesis.
-      </p>
+<div class="login-page">
+  <div class="login-shell">
+    <section class="login-visual" aria-label="Ambiente del restaurante">
+      <div class="login-visual-content">
+        <p>Restaurante Casa Lola</p>
+        <h1>CRM-operativo para optimizar </h1>
+        <span>la gestión de pedidos, clientes, reservas, fidelización y toma de decisiones de un restaurante en un solo panel.</span>
+      </div>
     </section>
 
-    <section class="rounded-lg border border-white/10 bg-white p-6 shadow-2xl sm:p-8">
+    <section class="login-card">
       <div class="mb-8">
-        <div class="grid h-12 w-12 place-items-center rounded-lg bg-slate-950 text-lg font-bold text-white">R</div>
-        <h2 class="mt-5 text-2xl font-semibold tracking-tight">Iniciar sesión</h2>
+        <!-- <div class="grid h-12 w-12 place-items-center rounded-lg bg-slate-950 text-lg font-bold text-white">R</div> -->
+        <h2 class="mt-5 text-2xl font-semibold tracking-tight">Iniciar sesion</h2>
         <p class="mt-2 text-sm text-slate-500">Ingresa con tus credenciales del sistema.</p>
       </div>
 
       <form class="grid gap-4" (ngSubmit)="iniciarSesion()">
         <label class="text-sm font-medium text-slate-700">
-          Correo
+          Gmail
           <input
             class="input"
             type="email"
@@ -31,13 +29,13 @@
         </label>
 
         <label class="text-sm font-medium text-slate-700">
-          Contraseña
+          Password
           <input
             class="input"
             type="password"
             name="password"
             [(ngModel)]="password"
-            placeholder="••••••••"
+            placeholder="********"
             required
           />
         </label>
@@ -46,7 +44,7 @@
           <div class="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{{ error }}</div>
         }
 
-        <button class="btn btn-primary mt-2 w-full" type="submit">Ingresar al sistema</button>
+        <button class="btn btn-primary mt-2 w-full" type="submit">Ingresar</button>
       </form>
     </section>
   </div>

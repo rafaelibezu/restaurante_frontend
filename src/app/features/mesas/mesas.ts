@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { delay } from 'rxjs';
 
 import { Mesa, MesaRequest } from '../../core/models/mesa';
 import { MesaService } from '../../core/services/mesa';
@@ -15,6 +16,7 @@ import { MesaService } from '../../core/services/mesa';
 export class Mesas implements OnInit {
 
   mesas: Mesa[] = [];
+  cargandoListado = false;
   visible = false;
   editando = false;
   idEditando?: number;
@@ -40,9 +42,17 @@ export class Mesas implements OnInit {
   }
 
   listar(): void {
-    this.mesaService.listar().subscribe({
+    this.cargandoListado = true;
+    this.cdr.detectChanges();
+
+    this.mesaService.listar().pipe(delay(2000)).subscribe({
       next: data => {
         this.mesas = data;
+        this.cargandoListado = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.cargandoListado = false;
         this.cdr.detectChanges();
       }
     });

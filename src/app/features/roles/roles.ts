@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { delay } from 'rxjs';
 
 import { Rol, RolRequest } from '../../core/models/rol';
 import { RolService } from '../../core/services/rol';
@@ -15,6 +16,7 @@ import { RolService } from '../../core/services/rol';
 export class Roles implements OnInit {
 
   roles: Rol[] = [];
+  cargandoListado = false;
   visible = false;
   editando = false;
   idEditando?: number;
@@ -34,9 +36,17 @@ export class Roles implements OnInit {
   }
 
   listar(): void {
-    this.rolService.listar().subscribe({
+    this.cargandoListado = true;
+    this.cdr.detectChanges();
+
+    this.rolService.listar().pipe(delay(2000)).subscribe({
       next: data => {
         this.roles = data;
+        this.cargandoListado = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.cargandoListado = false;
         this.cdr.detectChanges();
       }
     });

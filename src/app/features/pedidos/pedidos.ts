@@ -1,6 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { delay } from 'rxjs';
 
 import { DetallePedidoRequest, Pedido, PedidoRequest } from '../../core/models/pedido';
 import { Mesa } from '../../core/models/mesa';
@@ -23,6 +24,7 @@ export class Pedidos implements OnInit {
   pedidos: Pedido[] = [];
   mesas: Mesa[] = [];
   productos: Producto[] = [];
+  cargandoListado = false;
   visible = false;
 
   form: PedidoRequest = {
@@ -52,9 +54,17 @@ export class Pedidos implements OnInit {
   }
 
   listar(): void {
-    this.pedidoService.listar().subscribe({
+    this.cargandoListado = true;
+    this.cdr.detectChanges();
+
+    this.pedidoService.listar().pipe(delay(2000)).subscribe({
       next: data => {
         this.pedidos = data;
+        this.cargandoListado = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.cargandoListado = false;
         this.cdr.detectChanges();
       }
     });

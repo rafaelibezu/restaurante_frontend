@@ -1,1 +1,111 @@
+.login-page {
+  display: grid;
+  min-height: 100vh;
+  padding: 1rem;
+  background: #0f172a;
+  color: #0f172a;
+}
 
+.login-shell {
+  display: grid;
+  width: min(1120px, 100%);
+  min-height: calc(100vh - 2rem);
+  margin: auto;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 0.75rem;
+  background: #ffffff;
+  box-shadow: 0 24px 80px rgb(2 6 23 / 0.35);
+}
+
+.login-visual {
+  position: relative;
+  min-height: 260px;
+  background:
+    linear-gradient(180deg, rgb(2 6 23 / 0.18), rgb(2 6 23 / 0.78)),
+    url("/assets/img/restaurante_banner.jpg") center 38% / cover;
+}
+
+.login-visual-content {
+  position: absolute;
+  inset: auto 1.25rem 1.25rem;
+  max-width: 36rem;
+  color: #ffffff;
+}
+
+.login-visual-content p {
+  margin: 0;
+  color: #67e8f9;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.login-visual-content h1 {
+  margin: 0.8rem 0 0;
+  font-size: clamp(1.8rem, 4vw, 3.5rem);
+  font-weight: 750;
+  line-height: 1;
+}
+
+.login-visual-content span {
+  display: block;
+  margin-top: 1rem;
+  max-width: 29rem;
+  color: #e2e8f0;
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+.login-card {
+  display: grid;
+  align-content: center;
+  padding: 1.5rem;
+  background: #ffffff;
+}
+
+@media (min-width: 1024px) {
+  .login-page {
+    padding: 2rem;
+  }
+
+  .login-shell {
+    grid-template-columns: minmax(0, 1fr) 430px;
+    min-height: min(760px, calc(100vh - 4rem));
+  }
+
+  .login-visual {
+    min-height: 100%;
+    background-position: center center;
+  }
+
+  .login-visual-content {
+    inset: auto 2.25rem 2.25rem;
+  }
+
+  .login-card {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .login-page {
+    padding: 0;
+  }
+
+  .login-shell {
+    min-height: 100vh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .login-visual {
+    min-height: 220px;
+  }
+
+  .login-card {
+    align-content: start;
+    padding: 1.25rem;
+  }
+}

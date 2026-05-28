@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { delay } from 'rxjs';
 
 import { Inventario, InventarioRequest } from '../../core/models/inventario';
 import { Producto } from '../../core/models/producto';
@@ -18,6 +19,7 @@ export class InventarioComponent implements OnInit {
 
   inventario: Inventario[] = [];
   productos: Producto[] = [];
+  cargandoListado = false;
 
   visible = false;
   editando = false;
@@ -41,9 +43,17 @@ export class InventarioComponent implements OnInit {
   }
 
   listar(): void {
-    this.inventarioService.listar().subscribe({
+    this.cargandoListado = true;
+    this.cdr.detectChanges();
+
+    this.inventarioService.listar().pipe(delay(2000)).subscribe({
       next: data => {
         this.inventario = data;
+        this.cargandoListado = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.cargandoListado = false;
         this.cdr.detectChanges();
       }
     });

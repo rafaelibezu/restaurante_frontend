@@ -23,7 +23,17 @@
           </tr>
         </thead>
         <tbody>
-          @for (pedido of pedidos; track pedido.idPedido) {
+          @if (cargandoListado) {
+            <tr>
+              <td colspan="7" class="table-loading-cell">
+                <div class="table-loading">
+                  <span class="loading-spinner"></span>
+                  <span>Cargando pedidos...</span>
+                </div>
+              </td>
+            </tr>
+          } @else {
+            @for (pedido of pedidos; track pedido.idPedido) {
             <tr>
               <td>#{{ pedido.idPedido }}</td>
               <td>{{ pedido.fecha }} {{ pedido.hora }}</td>
@@ -42,6 +52,7 @@
             <tr>
               <td colspan="7" class="text-center text-slate-500">No hay pedidos registrados.</td>
             </tr>
+            }
           }
         </tbody>
       </table>

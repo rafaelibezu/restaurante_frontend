@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { delay } from 'rxjs';
 
 import { Categoria, CategoriaRequest } from '../../core/models/categoria';
 import { CategoriaService } from '../../core/services/categoria';
@@ -15,6 +16,7 @@ import { CategoriaService } from '../../core/services/categoria';
 export class Categorias implements OnInit {
 
   categorias: Categoria[] = [];
+  cargandoListado = false;
   visible = false;
   editando = false;
   idEditando?: number;
@@ -35,9 +37,17 @@ export class Categorias implements OnInit {
   }
 
   listar(): void {
-    this.categoriaService.listar().subscribe({
+    this.cargandoListado = true;
+    this.cdr.detectChanges();
+
+    this.categoriaService.listar().pipe(delay(2000)).subscribe({
       next: data => {
         this.categorias = data;
+        this.cargandoListado = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.cargandoListado = false;
         this.cdr.detectChanges();
       }
     });

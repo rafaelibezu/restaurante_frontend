@@ -1,6 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { delay } from 'rxjs';
 
 import { Venta, VentaRequest } from '../../core/models/venta';
 import { VentaService } from '../../core/services/venta';
@@ -17,6 +18,7 @@ import { AuthService } from '../../core/services/auth';
 export class Ventas implements OnInit {
 
   ventas: Venta[] = [];
+  cargandoListado = false;
   visible = false;
 
   metodosPago = [
@@ -42,9 +44,17 @@ export class Ventas implements OnInit {
   }
 
   listar(): void {
-    this.ventaService.listar().subscribe({
+    this.cargandoListado = true;
+    this.cdr.detectChanges();
+
+    this.ventaService.listar().pipe(delay(2000)).subscribe({
       next: data => {
         this.ventas = data;
+        this.cargandoListado = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.cargandoListado = false;
         this.cdr.detectChanges();
       }
     });

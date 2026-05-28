@@ -23,7 +23,17 @@
           </tr>
         </thead>
         <tbody>
-          @for (venta of ventas; track venta.idVenta) {
+          @if (cargandoListado) {
+            <tr>
+              <td colspan="7" class="table-loading-cell">
+                <div class="table-loading">
+                  <span class="loading-spinner"></span>
+                  <span>Cargando ventas...</span>
+                </div>
+              </td>
+            </tr>
+          } @else {
+            @for (venta of ventas; track venta.idVenta) {
             <tr>
               <td>{{ venta.idVenta }}</td>
               <td>{{ venta.fecha }}</td>
@@ -37,6 +47,7 @@
             <tr>
               <td colspan="7" class="text-center text-slate-500">No hay ventas registradas.</td>
             </tr>
+            }
           }
         </tbody>
       </table>
