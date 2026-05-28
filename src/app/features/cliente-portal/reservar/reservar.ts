@@ -20,6 +20,8 @@ export class Reservar implements OnInit {
   mesasDisponibles: PublicMesa[] = [];
   idMesaSeleccionada: number | null = null;
 
+  fechaMinima = new Date().toISOString().split('T')[0];
+
   cargando = false;
   exito = '';
   error = '';
@@ -105,6 +107,18 @@ export class Reservar implements OnInit {
       return;
     }
 
+    const hora = this.reserva.horaReserva;
+
+    if (hora < '12:00' || hora > '23:00') {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Horario no disponible',
+        text: 'Las reservas solo están disponibles entre 12:00 y 23:00.',
+        confirmButtonColor: '#17213f'
+      });
+      return;
+    }
+
     this.cargando = true;
     this.cdr.markForCheck();
 
@@ -145,13 +159,15 @@ export class Reservar implements OnInit {
       error: error => {
         console.error(error);
 
-        this.cargando = false;
-        this.cdr.markForCheck();
+        const mensaje =
+          error?.error?.mensaje ||
+          error?.error?.message ||
+          'Ocurrió un problema al registrar la reserva. Revisa los datos e inténtalo nuevamente.';
 
         Swal.fire({
           icon: 'error',
           title: 'No se pudo registrar',
-          text: 'Ocurrió un problema al registrar la reserva. Revisa los datos e inténtalo nuevamente.',
+          text: mensaje,
           confirmButtonText: 'Aceptar',
           confirmButtonColor: '#17213f'
         });
@@ -160,28 +176,28 @@ export class Reservar implements OnInit {
   }
 
   limpiarFormulario(): void {
-    this.cliente = {
-      nombre: '',
-      apellido: '',
-      telefono: '',
-      correo: '',
-      fechaNacimiento: '',
-      preferencias: '',
-      alergias: '',
-      estado: true
-    };
+        this.cliente = {
+          nombre: '',
+          apellido: '',
+          telefono: '',
+          correo: '',
+          fechaNacimiento: '',
+          preferencias: '',
+          alergias: '',
+          estado: true
+        };
 
-    this.reserva = {
-      fechaReserva: '',
-      horaReserva: '',
-      cantidadPersonas: 2,
-      observacion: ''
-    };
-  }
+        this.reserva = {
+          fechaReserva: '',
+          horaReserva: '',
+          cantidadPersonas: 2,
+          observacion: ''
+        };
+      }
 
   mesaSeleccionada() {
-    return this.mesasDisponibles.find(
-      mesa => mesa.idMesa === this.idMesaSeleccionada
-    );
-  }
-}
+        return this.mesasDisponibles.find(
+          mesa => mesa.idMesa === this.idMesaSeleccionada
+        );
+      }
+    }
