@@ -14,7 +14,8 @@
       </div>
 
       <nav class="flex-1 space-y-1 overflow-y-auto px-4 py-5 text-sm">
-        <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+        <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item">
           <span>Dashboard</span>
           <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M3 13h8V3H3v10Z" />
@@ -23,7 +24,8 @@
           </svg>
         </a>
 
-        <a routerLink="/dashboard-crm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+        <a routerLink="/dashboard-crm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item">
           <span>Dashboard CRM</span>
           <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 19V5" />
@@ -34,7 +36,8 @@
           </svg>
         </a>
 
-        <a routerLink="/reservas" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+        <a routerLink="/reservas" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item">
           <span>Reservas</span>
           <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M8 2v4" />
@@ -44,7 +47,8 @@
           </svg>
         </a>
 
-        <a routerLink="/notificaciones" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+        <a routerLink="/notificaciones" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item">
           <span>Notificaciones</span>
           <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
@@ -52,7 +56,8 @@
           </svg>
         </a>
 
-        <a routerLink="/clientes" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+        <a routerLink="/clientes" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item">
           <span>Clientes CRM</span>
           <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
@@ -62,7 +67,8 @@
           </svg>
         </a>
 
-        <a routerLink="/promociones-admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+        <a routerLink="/promociones-admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item">
           <span>Promociones</span>
           <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M20 12v10H4V12" />
@@ -73,7 +79,8 @@
           </svg>
         </a>
 
-        <a routerLink="/fidelizacion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+        <a routerLink="/fidelizacion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item">
           <span>Fidelizacion</span>
           <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 21s-7-4.35-9.5-8.5A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6.5C19 16.65 12 21 12 21Z" />
@@ -81,88 +88,92 @@
         </a>
 
         @if (puedeVer(['Administrador', 'Mesero', 'Cocinero', 'Supervisor'])) {
-          <a routerLink="/pedidos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
-            <span>Pedidos</span>
-            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M6 2h12l1 20H5L6 2Z" />
-              <path d="M9 6h6" />
-              <path d="M9 10h6" />
-              <path d="M9 14h4" />
-            </svg>
-          </a>
+        <a routerLink="/pedidos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+          <span>Pedidos</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 2h12l1 20H5L6 2Z" />
+            <path d="M9 6h6" />
+            <path d="M9 10h6" />
+            <path d="M9 14h4" />
+          </svg>
+        </a>
         }
 
         @if (puedeVer(['Administrador', 'Mesero', 'Supervisor'])) {
-          <a routerLink="/mesas" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
-            <span>Mesas</span>
-            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 10h16" />
-              <path d="M6 10v10" />
-              <path d="M18 10v10" />
-              <path d="M8 4h8a3 3 0 0 1 3 3v3H5V7a3 3 0 0 1 3-3Z" />
-            </svg>
-          </a>
+        <a routerLink="/mesas" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+          <span>Mesas</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 10h16" />
+            <path d="M6 10v10" />
+            <path d="M18 10v10" />
+            <path d="M8 4h8a3 3 0 0 1 3 3v3H5V7a3 3 0 0 1 3-3Z" />
+          </svg>
+        </a>
         }
 
         @if (puedeVer(['Administrador', 'Supervisor'])) {
-          <a routerLink="/productos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
-            <span>Productos</span>
-            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 11h16" />
-              <path d="M5 11l1.5 9h11L19 11" />
-              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
-            </svg>
-          </a>
+        <a routerLink="/productos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item">
+          <span>Productos</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 11h16" />
+            <path d="M5 11l1.5 9h11L19 11" />
+            <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+          </svg>
+        </a>
 
-          <a routerLink="/categorias" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
-            <span>Categorias</span>
-            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 4h7v7H4z" />
-              <path d="M13 4h7v7h-7z" />
-              <path d="M4 13h7v7H4z" />
-              <path d="M13 13h7v7h-7z" />
-            </svg>
-          </a>
+        <a routerLink="/categorias" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item">
+          <span>Categorias</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 4h7v7H4z" />
+            <path d="M13 4h7v7h-7z" />
+            <path d="M4 13h7v7H4z" />
+            <path d="M13 13h7v7h-7z" />
+          </svg>
+        </a>
 
-          <a routerLink="/inventario" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
-            <span>Inventario</span>
-            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M21 8 12 3 3 8l9 5 9-5Z" />
-              <path d="M3 8v8l9 5 9-5V8" />
-              <path d="M12 13v8" />
-            </svg>
-          </a>
+        <a routerLink="/inventario" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item">
+          <span>Inventario</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 8 12 3 3 8l9 5 9-5Z" />
+            <path d="M3 8v8l9 5 9-5V8" />
+            <path d="M12 13v8" />
+          </svg>
+        </a>
         }
 
         @if (puedeVer(['Administrador', 'Cajero', 'Supervisor'])) {
-          <a routerLink="/ventas" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
-            <span>Ventas</span>
-            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 6h18" />
-              <path d="M3 10h18" />
-              <path d="M5 6v14h14V6" />
-              <path d="M8 15h3" />
-              <path d="M14 15h2" />
-            </svg>
-          </a>
+        <a routerLink="/ventas" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+          <span>Ventas</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 6h18" />
+            <path d="M3 10h18" />
+            <path d="M5 6v14h14V6" />
+            <path d="M8 15h3" />
+            <path d="M14 15h2" />
+          </svg>
+        </a>
         }
 
         @if (puedeVer(['Administrador'])) {
-          <a routerLink="/usuarios" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
-            <span>Usuarios</span>
-            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
-              <path d="M4 22a8 8 0 0 1 16 0" />
-            </svg>
-          </a>
+        <a routerLink="/usuarios" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item">
+          <span>Usuarios</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
+            <path d="M4 22a8 8 0 0 1 16 0" />
+          </svg>
+        </a>
 
-          <a routerLink="/roles" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
-            <span>Roles</span>
-            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3Z" />
-              <path d="m9 12 2 2 4-5" />
-            </svg>
-          </a>
+        <a routerLink="/roles" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+          <span>Roles</span>
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3Z" />
+            <path d="m9 12 2 2 4-5" />
+          </svg>
+        </a>
         }
       </nav>
 
@@ -184,9 +195,80 @@
           <p class="mt-1 text-sm text-slate-500">Panel administrativo para pedidos, ventas e inventario</p>
         </div>
 
-        <button class="btn btn-secondary" type="button" (click)="logout()">
-          Cerrar sesion
-        </button>
+        <div class="relative flex items-center gap-3">
+          <!-- CAMPANITA -->
+          <div class="relative">
+            <button type="button" (click)="toggleNotificaciones()"
+              class="relative rounded-xl bg-slate-100 px-4 py-3 text-[#17213f] transition hover:bg-slate-200">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                <path d="M10 21h4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              </svg>
+
+              @if (notificacionesPendientes.length > 0) {
+              <span
+                class="absolute -right-2 -top-2 grid h-6 min-w-6 place-items-center rounded-full bg-red-600 px-1 text-xs font-black text-white">
+                {{ notificacionesPendientes.length }}
+              </span>
+              }
+            </button>
+
+            @if (mostrarPanelNotificaciones) {
+            <div class="absolute right-0 z-50 mt-3 w-[360px] rounded-2xl bg-white p-4 shadow-2xl ring-1 ring-slate-200">
+              <div class="mb-3 flex items-center justify-between">
+                <h3 class="text-lg font-black text-[#17213f]">Notificaciones</h3>
+
+                <button type="button" (click)="irANotificaciones()"
+                  class="text-sm font-bold text-[#d6a84f] hover:underline">
+                  Ver todas
+                </button>
+              </div>
+
+              @if (notificacionesPendientes.length === 0) {
+              <div class="rounded-xl bg-slate-50 p-4 text-center text-sm font-bold text-slate-500">
+                No hay notificaciones pendientes.
+              </div>
+              }
+
+              @if (notificacionesPendientes.length > 0) {
+              <div class="grid max-h-[360px] gap-3 overflow-auto">
+                @for (notificacion of notificacionesPendientes.slice(0, 5); track notificacion.idNotificacion) {
+                <div class="rounded-xl border border-slate-100 bg-slate-50 p-3">
+                  <div class="flex items-start gap-3">
+                    <div class="grid h-10 w-10 place-items-center rounded-xl bg-[#17213f] text-white">
+                      <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                        <path d="M10 21h4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                      </svg>
+                    </div>
+
+                    <div class="min-w-0 flex-1">
+                      <p class="m-0 font-black text-[#17213f]">
+                        {{ notificacion.titulo }}
+                      </p>
+
+                      <p class="m-0 mt-1 line-clamp-2 text-sm text-slate-500">
+                        {{ notificacion.mensaje }}
+                      </p>
+
+                      <p class="m-0 mt-2 text-xs font-bold text-[#d6a84f]">
+                        {{ notificacion.tipo }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                }
+              </div>
+              }
+            </div>
+            }
+          </div>
+
+          <!-- BOTON CERRAR SESION -->
+          <button class="btn btn-secondary" type="button" (click)="logout()">
+            Cerrar sesion
+          </button>
+        </div>
       </div>
     </header>
 

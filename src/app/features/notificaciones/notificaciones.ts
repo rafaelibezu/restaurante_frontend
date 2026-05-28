@@ -1,10 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 import { Notificacion } from '../../core/models/notification';
 import { NotificacionService } from '../../core/services/notification';
+import { WebsocketNotificacionService } from '../../core/services/websocket-notificacion';
 
 @Component({
   selector: 'app-notificaciones',
@@ -14,7 +16,7 @@ import { NotificacionService } from '../../core/services/notification';
   styleUrl: './notificaciones.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Notificaciones implements OnInit {
+export class Notificaciones implements OnInit, OnDestroy {
 
   notificaciones: Notificacion[] = [];
   notificacionesFiltradas: Notificacion[] = [];
@@ -22,6 +24,7 @@ export class Notificaciones implements OnInit {
   filtroEstado = 'Todos';
   filtroTipo = 'Todos';
   cargandoListado = false;
+  private wsSubscription?: Subscription;
 
   estados = [
     { label: 'Todos', value: 'Todos' },
@@ -43,11 +46,17 @@ export class Notificaciones implements OnInit {
 
   constructor(
     private notificacionService: NotificacionService,
+    private websocketNotificacionService: WebsocketNotificacionService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.listar();
+    this.escucharNotificacionesEnTiempoReal();
+  }
+
+  ngOnDestroy(): void {
+    this.wsSubscription?.unsubscribe();
   }
 
   listar(): void {
@@ -87,6 +96,39 @@ export class Notificaciones implements OnInit {
     });
 
     this.cdr.markForCheck();
+  }
+
+  private escucharNotificacionesEnTiempoReal(): void {
+    this.websocketNotificacionService.conectar();
+
+    this.wsSubscription = this.websocketNotificacionService.nuevaNotificacion$
+      .subscribe(notificacion => {
+        if (!notificacion) {
+          return;
+        }
+
+        this.agregarOActualizarNotificacion(notificacion);
+      });
+  }
+
+  private agregarOActualizarNotificacion(notificacion: Notificacion): void {
+    const index = this.notificaciones.findIndex(
+      item => item.idNotificacion === notificacion.idNotificacion
+    );
+
+    if (index >= 0) {
+      this.notificaciones = this.notificaciones.map(item =>
+        item.idNotificacion === notificacion.idNotificacion ? notificacion : item
+      );
+    } else {
+      this.notificaciones = [notificacion, ...this.notificaciones];
+    }
+
+    this.notificaciones = this.notificaciones.sort((a, b) =>
+      new Date(b.fechaGeneracion).getTime() - new Date(a.fechaGeneracion).getTime()
+    );
+
+    this.aplicarFiltros();
   }
 
   cambiarEstado(notificacion: Notificacion, estado: string): void {
