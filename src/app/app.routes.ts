@@ -121,6 +121,11 @@ export const routes: Routes = [
         path: 'promociones-admin',
         loadComponent: () =>
           import('./features/promociones-admin/promociones-admin').then(m => m.PromocionesAdmin)
+      },
+      {
+        path: 'fidelizacion',
+        loadComponent: () =>
+          import('./features/fidelizacion/fidelizacion').then(m => m.Fidelizacion)
       }
     ]
   },

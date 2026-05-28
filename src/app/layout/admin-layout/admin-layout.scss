@@ -1,1 +1,43 @@
+:host {
+  display: block;
+}
 
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  border-radius: .5rem;
+  padding: .65rem .75rem;
+  color: #cbd5e1;
+  transition: background-color .18s ease, color .18s ease, transform .18s ease;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+}
+
+.nav-item:hover {
+  transform: translateX(2px);
+}
+
+.nav-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 1.15rem;
+  color: #94a3b8;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  transition: color .18s ease, transform .18s ease;
+}
+
+.nav-item:hover .nav-icon,
+.nav-item.active .nav-icon {
+  color: #67e8f9;
+  transform: scale(1.06);
+}

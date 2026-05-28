@@ -1,0 +1,98 @@
+:host {
+  display: block;
+}
+
+.kpi-card {
+  border-radius: .5rem;
+  background: white;
+  padding: 1.25rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  border: 1px solid #e2e8f0;
+
+  span {
+    color: #64748b;
+    font-weight: 800;
+  }
+
+  strong {
+    display: block;
+    margin-top: .75rem;
+    font-size: 2rem;
+    color: #17213f;
+  }
+
+  p {
+    margin: .25rem 0 0;
+    color: #94a3b8;
+  }
+
+  &.bronze {
+    border-color: #d6a84f;
+
+    strong {
+      color: #9a6b12;
+    }
+  }
+
+  &.gold {
+    border-color: #facc15;
+
+    strong {
+      color: #b45309;
+    }
+  }
+
+  &.info {
+    border-color: #93c5fd;
+
+    strong {
+      color: #1d4ed8;
+    }
+  }
+}
+
+.badge-bronze {
+  background: #fff7ed;
+  color: #9a3412;
+  box-shadow: inset 0 0 0 1px #fed7aa;
+}
+
+.badge-silver {
+  background: #f1f5f9;
+  color: #475569;
+  box-shadow: inset 0 0 0 1px #cbd5e1;
+}
+
+.badge-gold {
+  background: #fef3c7;
+  color: #a16207;
+  box-shadow: inset 0 0 0 1px #fde68a;
+}
+
+.badge-vip {
+  background: #dcfce7;
+  color: #15803d;
+  box-shadow: inset 0 0 0 1px #bbf7d0;
+}
+
+.progress-wrap {
+  width: 8.5rem;
+  height: .625rem;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.progress-bar {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #17213f, #d6a84f);
+}
+
+.form small {
+  display: block;
+  margin-top: .35rem;
+  color: #94a3b8;
+  font-size: .8rem;
+}
