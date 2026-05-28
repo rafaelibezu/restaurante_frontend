@@ -63,6 +63,11 @@ export const routes: Routes = [
         path: 'usuarios',
         loadComponent: () =>
           import('./features/usuarios/usuarios').then(m => m.Usuarios)
+      },
+      {
+        path: 'dashboard-crm',
+        loadComponent: () =>
+          import('./features/dashboard-crm/dashboard-crm').then(m => m.DashboardCrm)
       }
     ]
   },

@@ -8,37 +8,41 @@
           </div>
           <div>
             <h2 class="text-base font-semibold">Restaurante</h2>
-            <span class="text-xs text-slate-400">Gestión operativa</span>
+            <span class="text-xs text-slate-400">Gestion operativa</span>
           </div>
         </div>
       </div>
 
       <nav class="flex-1 space-y-1 px-4 py-5 text-sm">
-        <a href="/dashboard" (click)="irDashboard($event)" [class.bg-white\/10]="esRutaDashboard()" [class.text-white]="esRutaDashboard()" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">
+        <a routerLink="/dashboard" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">
           Dashboard
         </a>
 
+        <a routerLink="/dashboard-crm" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">
+          Dashboard CRM
+        </a>
+
         @if (puedeVer(['Administrador', 'Mesero', 'Cocinero', 'Supervisor'])) {
-          <a routerLink="/pedidos" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Pedidos</a>
+          <a routerLink="/pedidos" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Pedidos</a>
         }
 
         @if (puedeVer(['Administrador', 'Mesero', 'Supervisor'])) {
-          <a routerLink="/mesas" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Mesas</a>
+          <a routerLink="/mesas" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Mesas</a>
         }
 
         @if (puedeVer(['Administrador', 'Supervisor'])) {
-          <a routerLink="/productos" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Productos</a>
-          <a routerLink="/categorias" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Categorías</a>
-          <a routerLink="/inventario" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Inventario</a>
+          <a routerLink="/productos" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Productos</a>
+          <a routerLink="/categorias" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Categorias</a>
+          <a routerLink="/inventario" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Inventario</a>
         }
 
         @if (puedeVer(['Administrador', 'Cajero', 'Supervisor'])) {
-          <a routerLink="/ventas" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Ventas</a>
+          <a routerLink="/ventas" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Ventas</a>
         }
 
         @if (puedeVer(['Administrador'])) {
-          <a routerLink="/usuarios" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Usuarios</a>
-          <a routerLink="/roles" routerLinkActive="bg-white/10 text-white" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Roles</a>
+          <a routerLink="/usuarios" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Usuarios</a>
+          <a routerLink="/roles" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Roles</a>
         }
       </nav>
 
@@ -60,7 +64,7 @@
         </div>
 
         <button class="btn btn-secondary" type="button" (click)="logout()">
-          Cerrar sesión
+          Cerrar sesion
         </button>
       </div>
     </header>

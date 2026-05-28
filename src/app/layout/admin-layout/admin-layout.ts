@@ -25,16 +25,6 @@ export class AdminLayout {
     this.router.navigate(['/login']);
   }
 
-  irDashboard(event: MouseEvent): void {
-    event.preventDefault();
-    (event.currentTarget as HTMLElement | null)?.blur();
-    this.router.navigateByUrl('/dashboard');
-  }
-
-  esRutaDashboard(): boolean {
-    return this.router.url === '/dashboard' || this.router.url === '/';
-  }
-
   puedeVer(rolesPermitidos: string[]): boolean {
     const rol = this.usuario?.rol?.toUpperCase();
     return rolesPermitidos.map(r => r.toUpperCase()).includes(rol);
