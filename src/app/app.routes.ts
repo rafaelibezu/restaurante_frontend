@@ -1,18 +1,51 @@
 import { Routes } from '@angular/router';
+
 import { Login } from './features/auth/login/login';
+
 import { AdminLayout } from './layout/admin-layout/admin-layout';
+import { PublicLayout } from './layout/public-layout/public-layout';
+
 import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
+
+  // REDIRECCIÓN INICIAL
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'cliente',
     pathMatch: 'full'
   },
+
+  // LOGIN ADMIN
   {
     path: 'login',
     component: Login
   },
+
+  // PORTAL CLIENTE (PÚBLICO)
+  {
+    path: 'cliente',
+    component: PublicLayout,
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/cliente-portal/home/home').then(m => m.Home)
+      },
+      {
+        path: 'reservar',
+        loadComponent: () =>
+          import('./features/cliente-portal/reservar/reservar').then(m => m.Reservar)
+      },
+      {
+        path: 'promociones',
+        loadComponent: () =>
+          import('./features/cliente-portal/promociones/promociones').then(m => m.Promociones)
+      }
+    ]
+  },
+
+  // PANEL ADMIN
   {
     path: '',
     component: AdminLayout,
@@ -71,8 +104,10 @@ export const routes: Routes = [
       }
     ]
   },
+
+  // FALLBACK
   {
     path: '**',
-    redirectTo: 'login'
+    redirectTo: 'cliente'
   }
 ];
