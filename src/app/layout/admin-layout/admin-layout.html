@@ -38,7 +38,11 @@
           class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">
           Clientes CRM
         </a>
-
+        <a routerLink="/promociones-admin" routerLinkActive="bg-white/10 text-white"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">
+          Promociones
+        </a>
 
         @if (puedeVer(['Administrador', 'Mesero', 'Cocinero', 'Supervisor'])) {
         <a routerLink="/pedidos" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }"

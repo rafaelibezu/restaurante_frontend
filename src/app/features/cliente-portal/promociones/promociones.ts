@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { PublicPromocion, PublicService } from '../../../core/services/public';
@@ -16,6 +16,7 @@ export class Promociones implements OnInit {
 
   promociones: PublicPromocion[] = [];
   cargando = true;
+  promocionActiva = 0;
 
   constructor(
     private publicService: PublicService,
@@ -30,23 +31,44 @@ export class Promociones implements OnInit {
     this.publicService.listarPromocionesVigentes().subscribe({
       next: data => {
         this.promociones = data;
+        this.promocionActiva = 0;
         this.cargando = false;
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       },
       error: error => {
         console.error(error);
         this.cargando = false;
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       }
     });
   }
 
-  textoDescuento(promocion: PublicPromocion): string {
-    if (promocion.tipo === 'Porcentaje') {
-      return `${promocion.valorDescuento}%`;
+  anterior(): void {
+    if (this.promociones.length === 0) {
+      return;
     }
 
-    if (promocion.tipo === 'Monto fijo') {
+    this.promocionActiva = this.promocionActiva === 0
+      ? this.promociones.length - 1
+      : this.promocionActiva - 1;
+  }
+
+  siguiente(): void {
+    if (this.promociones.length === 0) {
+      return;
+    }
+
+    this.promocionActiva = this.promocionActiva === this.promociones.length - 1
+      ? 0
+      : this.promocionActiva + 1;
+  }
+
+  irA(index: number): void {
+    this.promocionActiva = index;
+  }
+
+  textoDescuento(promocion: PublicPromocion): string {
+    if (this.normalizar(promocion.tipo) === 'monto fijo') {
       return `S/ ${promocion.valorDescuento}`;
     }
 
@@ -56,14 +78,14 @@ export class Promociones implements OnInit {
   iconoPromocion(promocion: PublicPromocion): string {
     const texto = this.textoPromocion(promocion);
 
-    if (texto.includes('cumple') || texto.includes('birthday')) return '🎂';
-    if (texto.includes('frecuente') || texto.includes('fidel')) return '⭐';
-    if (texto.includes('almuerzo') || texto.includes('menu') || texto.includes('menú')) return '🍽️';
-    if (texto.includes('pareja') || texto.includes('cena')) return '🥂';
-    if (texto.includes('familia') || texto.includes('grupo')) return '👨‍👩‍👧‍👦';
-    if (texto.includes('delivery') || texto.includes('llevar')) return '🛵';
+    if (texto.includes('cumple') || texto.includes('birthday')) return 'CM';
+    if (texto.includes('frecuente') || texto.includes('fidel')) return 'CF';
+    if (texto.includes('almuerzo') || texto.includes('menu')) return 'AL';
+    if (texto.includes('pareja') || texto.includes('cena')) return 'CE';
+    if (texto.includes('familia') || texto.includes('grupo')) return 'FA';
+    if (texto.includes('delivery') || texto.includes('llevar')) return 'DL';
 
-    return '🎁';
+    return 'PR';
   }
 
   tonoPromocion(promocion: PublicPromocion): string {
@@ -71,7 +93,7 @@ export class Promociones implements OnInit {
 
     if (texto.includes('cumple')) return 'birthday';
     if (texto.includes('frecuente') || texto.includes('fidel')) return 'loyal';
-    if (texto.includes('almuerzo') || texto.includes('menu') || texto.includes('menú')) return 'lunch';
+    if (texto.includes('almuerzo') || texto.includes('menu')) return 'lunch';
     if (texto.includes('pareja') || texto.includes('cena')) return 'dinner';
 
     return 'default';
@@ -80,15 +102,22 @@ export class Promociones implements OnInit {
   etiquetaPromocion(promocion: PublicPromocion): string {
     const texto = this.textoPromocion(promocion);
 
-    if (texto.includes('cumple')) return 'Cumpleaños';
+    if (texto.includes('cumple')) return 'Cumpleanos';
     if (texto.includes('frecuente') || texto.includes('fidel')) return 'Cliente frecuente';
-    if (texto.includes('almuerzo') || texto.includes('menu') || texto.includes('menú')) return 'Almuerzo';
+    if (texto.includes('almuerzo') || texto.includes('menu')) return 'Almuerzo';
     if (texto.includes('pareja') || texto.includes('cena')) return 'Cena especial';
 
     return promocion.tipo;
   }
 
   private textoPromocion(promocion: PublicPromocion): string {
-    return `${promocion.nombre} ${promocion.descripcion} ${promocion.tipo}`.toLowerCase();
+    return this.normalizar(`${promocion.nombre} ${promocion.descripcion} ${promocion.tipo}`);
+  }
+
+  private normalizar(texto: string): string {
+    return texto
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
   }
 }
