@@ -1,1 +1,166 @@
-<p>notificaciones works!</p>
+<div class="page-shell">
+  <div class="page-header">
+    <div>
+      <span class="text-xs font-bold uppercase tracking-wide text-cyan-700">Centro de alertas</span>
+      <h2>Notificaciones CRM</h2>
+      <p>Gestiona alertas de reservas, cumpleanos, promociones, stock y seguimiento de clientes.</p>
+    </div>
+
+    <div class="grid w-full gap-3 sm:w-[420px] sm:grid-cols-2">
+      <label class="text-sm font-semibold text-slate-700">
+        Estado
+        <select class="select" [(ngModel)]="filtroEstado" (change)="aplicarFiltros()">
+          @for (estado of estados; track estado.value) {
+            <option [value]="estado.value">{{ estado.label }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="text-sm font-semibold text-slate-700">
+        Tipo
+        <select class="select" [(ngModel)]="filtroTipo" (change)="aplicarFiltros()">
+          @for (tipo of tipos; track tipo.value) {
+            <option [value]="tipo.value">{{ tipo.label }}</option>
+          }
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <article class="kpi-card">
+      <span>Total</span>
+      <strong>{{ notificaciones.length }}</strong>
+      <p>Alertas registradas</p>
+    </article>
+
+    <article class="kpi-card warning">
+      <span>Pendientes</span>
+      <strong>{{ totalPorEstado('Pendiente') }}</strong>
+      <p>Requieren atencion</p>
+    </article>
+
+    <article class="kpi-card info">
+      <span>Leidas</span>
+      <strong>{{ totalPorEstado('Leida') }}</strong>
+      <p>Ya revisadas</p>
+    </article>
+
+    <article class="kpi-card success">
+      <span>Atendidas</span>
+      <strong>{{ totalPorEstado('Atendida') }}</strong>
+      <p>Resueltas</p>
+    </article>
+  </section>
+
+  @if (cargandoListado) {
+    <section class="panel p-8">
+      <div class="table-loading">
+        <span class="loading-spinner"></span>
+        <span>Cargando notificaciones...</span>
+      </div>
+    </section>
+  } @else if (notificacionesFiltradas.length === 0) {
+    <section class="panel p-10 text-center">
+      <div class="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-lg bg-slate-950 text-sm font-bold text-white">
+        0
+      </div>
+      <h3 class="text-xl font-semibold text-slate-950">No hay notificaciones para mostrar</h3>
+      <p class="mt-2 text-sm text-slate-500">Cambia los filtros o espera nuevas alertas del sistema.</p>
+    </section>
+  } @else {
+    <section class="grid gap-4">
+      @for (notificacion of notificacionesFiltradas; track notificacion.idNotificacion) {
+        <article class="notification-card">
+          <div class="notification-icon {{ tipoClass(notificacion.tipo) }}">
+            {{ inicialTipo(notificacion.tipo) }}
+          </div>
+
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-col justify-between gap-3 lg:flex-row lg:items-start">
+              <div class="min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                  <h3 class="text-base font-semibold text-slate-950">
+                    {{ notificacion.titulo }}
+                  </h3>
+
+                  <span [class]="'badge ' + estadoClass(notificacion.estado)">
+                    {{ notificacion.estado }}
+                  </span>
+
+                  <span class="type-badge {{ tipoClass(notificacion.tipo) }}">
+                    {{ notificacion.tipo }}
+                  </span>
+                </div>
+
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                  {{ notificacion.mensaje }}
+                </p>
+              </div>
+
+              <div class="shrink-0 text-left text-xs text-slate-500 lg:text-right">
+                <p class="m-0 font-bold text-slate-700">Generada</p>
+                <p class="m-0">{{ notificacion.fechaGeneracion | date:'dd/MM/yyyy HH:mm' }}</p>
+
+                @if (notificacion.fechaProgramada) {
+                  <p class="m-0 mt-2 font-bold text-slate-700">Programada</p>
+                  <p class="m-0">{{ notificacion.fechaProgramada | date:'dd/MM/yyyy HH:mm' }}</p>
+                }
+              </div>
+            </div>
+
+            @if (notificacion.nombreCliente) {
+              <div class="mt-4 rounded-md border border-slate-200 bg-slate-50 px-3 py-2">
+                <p class="m-0 text-sm font-semibold text-slate-700">
+                  Cliente relacionado:
+                  <span class="font-bold text-slate-950">{{ notificacion.nombreCliente }}</span>
+                </p>
+              </div>
+            }
+
+            <div class="actions mt-4">
+              @if (notificacion.estado === 'Pendiente') {
+                <button class="btn btn-info" type="button" (click)="marcarLeida(notificacion)">
+                  <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" />
+                    <path d="M12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z" />
+                  </svg>
+                  Marcar leida
+                </button>
+
+                <button class="btn btn-success" type="button" (click)="atender(notificacion)">
+                  <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                  Atender
+                </button>
+              }
+
+              @if (notificacion.estado === 'Leida') {
+                <button class="btn btn-success" type="button" (click)="atender(notificacion)">
+                  <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                  Atender
+                </button>
+              }
+
+              @if (notificacion.estado !== 'Descartada' && notificacion.estado !== 'Atendida') {
+                <button class="btn btn-danger" type="button" (click)="descartar(notificacion)">
+                  <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 6h18" />
+                    <path d="M8 6V4h8v2" />
+                    <path d="M19 6l-1 14H6L5 6" />
+                    <path d="M10 11v5" />
+                    <path d="M14 11v5" />
+                  </svg>
+                  Descartar
+                </button>
+              }
+            </div>
+          </div>
+        </article>
+      }
+    </section>
+  }
+</div>

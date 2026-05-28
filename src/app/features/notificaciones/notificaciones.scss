@@ -1,0 +1,163 @@
+:host {
+  display: block;
+}
+
+.kpi-card {
+  border-radius: .5rem;
+  background: white;
+  padding: 1.25rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  border: 1px solid #e2e8f0;
+
+  span {
+    color: #64748b;
+    font-weight: 800;
+  }
+
+  strong {
+    display: block;
+    margin-top: .75rem;
+    font-size: 2rem;
+    color: #17213f;
+  }
+
+  p {
+    margin: .25rem 0 0;
+    color: #94a3b8;
+  }
+
+  &.warning {
+    border-color: #facc15;
+
+    strong {
+      color: #b45309;
+    }
+  }
+
+  &.info {
+    border-color: #93c5fd;
+
+    strong {
+      color: #1d4ed8;
+    }
+  }
+
+  &.success {
+    border-color: #86efac;
+
+    strong {
+      color: #15803d;
+    }
+  }
+}
+
+.notification-card {
+  display: flex;
+  gap: 1rem;
+  border-radius: .5rem;
+  background: white;
+  padding: 1.25rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  transition: border-color .2s ease, box-shadow .2s ease;
+
+  &:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+  }
+}
+
+.notification-icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 3rem;
+  border-radius: .5rem;
+  background: #0f172a;
+  color: white;
+  font-size: .8rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: .25rem .625rem;
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+.badge-secondary {
+  background: #f1f5f9;
+  color: #475569;
+  box-shadow: inset 0 0 0 1px #cbd5e1;
+}
+
+.type-reserva {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.notification-icon.type-reserva {
+  background: #0369a1;
+  color: white;
+}
+
+.type-cumpleanos {
+  background: #fce7f3;
+  color: #be185d;
+}
+
+.notification-icon.type-cumpleanos {
+  background: #be185d;
+  color: white;
+}
+
+.type-promocion {
+  background: #fef3c7;
+  color: #a16207;
+}
+
+.notification-icon.type-promocion {
+  background: #a16207;
+  color: white;
+}
+
+.type-stock {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.notification-icon.type-stock {
+  background: #b91c1c;
+  color: white;
+}
+
+.type-cliente {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.notification-icon.type-cliente {
+  background: #15803d;
+  color: white;
+}
+
+.type-general {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.notification-icon.type-general {
+  background: #475569;
+  color: white;
+}
+
+@media (max-width: 640px) {
+  .notification-card {
+    flex-direction: column;
+  }
+}
