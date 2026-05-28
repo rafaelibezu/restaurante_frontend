@@ -1,0 +1,144 @@
+<div class="page-shell">
+  <div class="page-header">
+    <div>
+      <span class="text-xs font-bold uppercase tracking-wide text-cyan-700">CRM operativo</span>
+      <h2>Gestion de reservas</h2>
+      <p>Administra las reservas registradas desde el portal cliente.</p>
+    </div>
+
+    <label class="w-full text-sm font-semibold text-slate-700 sm:w-64">
+      Estado
+      <select class="select" [(ngModel)]="filtroEstado" (change)="aplicarFiltro()">
+        @for (estado of estados; track estado.value) {
+          <option [value]="estado.value">{{ estado.label }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <article class="kpi-card">
+      <span>Total reservas</span>
+      <strong>{{ reservas.length }}</strong>
+      <p>Reservas registradas</p>
+    </article>
+
+    <article class="kpi-card warning">
+      <span>Pendientes</span>
+      <strong>{{ totalPorEstado('Pendiente') }}</strong>
+      <p>Por confirmar</p>
+    </article>
+
+    <article class="kpi-card success">
+      <span>Confirmadas</span>
+      <strong>{{ totalPorEstado('Confirmada') }}</strong>
+      <p>Listas para atender</p>
+    </article>
+
+    <article class="kpi-card danger">
+      <span>Canceladas</span>
+      <strong>{{ totalPorEstado('Cancelada') }}</strong>
+      <p>No vigentes</p>
+    </article>
+  </section>
+
+  <section class="panel">
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Mesa</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Personas</th>
+            <th>Estado</th>
+            <th>Observacion</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @if (cargandoListado) {
+            <tr>
+              <td colspan="9" class="table-loading-cell">
+                <div class="table-loading">
+                  <span class="loading-spinner"></span>
+                  <span>Cargando reservas...</span>
+                </div>
+              </td>
+            </tr>
+          } @else {
+            @for (reserva of reservasFiltradas; track reserva.idReserva) {
+              <tr>
+                <td class="font-semibold text-slate-950">#{{ reserva.idReserva }}</td>
+
+                <td>
+                  <div class="font-medium text-slate-950">{{ reserva.nombreCliente }}</div>
+                  <div class="text-xs text-slate-500">Registrado por {{ reserva.nombreUsuario }}</div>
+                </td>
+
+                <td>Mesa {{ reserva.numeroMesa }}</td>
+                <td>{{ reserva.fechaReserva | date:'dd/MM/yyyy' }}</td>
+                <td>{{ reserva.horaReserva }}</td>
+                <td>{{ reserva.cantidadPersonas }}</td>
+
+                <td>
+                  <span [class]="'badge ' + estadoClass(reserva.estado)">
+                    {{ reserva.estado }}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="line-clamp-2 max-w-64 text-sm text-slate-500">
+                    {{ reserva.observacion || 'Sin observacion' }}
+                  </span>
+                </td>
+
+                <td>
+                  <div class="actions">
+                    @if (reserva.estado === 'Pendiente') {
+                      <button class="btn btn-success btn-icon" type="button" title="Confirmar" aria-label="Confirmar" (click)="confirmarReserva(reserva)">
+                        <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M20 6 9 17l-5-5" />
+                        </svg>
+                      </button>
+                    }
+
+                    @if (reserva.estado === 'Confirmada') {
+                      <button class="btn btn-info btn-icon" type="button" title="Marcar atendida" aria-label="Marcar atendida" (click)="atenderReserva(reserva)">
+                        <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M8 2v4" />
+                          <path d="M16 2v4" />
+                          <path d="M3 10h18" />
+                          <path d="M5 4h14a2 2 0 0 1 2 2v14H3V6a2 2 0 0 1 2-2Z" />
+                          <path d="m9 16 2 2 4-5" />
+                        </svg>
+                      </button>
+                    }
+
+                    @if (reserva.estado !== 'Cancelada' && reserva.estado !== 'Atendida') {
+                      <button class="btn btn-danger btn-icon" type="button" title="Cancelar" aria-label="Cancelar" (click)="cancelarReserva(reserva)">
+                        <svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M18 6 6 18" />
+                          <path d="m6 6 12 12" />
+                        </svg>
+                      </button>
+                    }
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="9" class="py-8 text-center text-slate-500">
+                  No hay reservas para mostrar.
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

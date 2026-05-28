@@ -14,35 +14,58 @@
       </div>
 
       <nav class="flex-1 space-y-1 px-4 py-5 text-sm">
-        <a routerLink="/dashboard" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">
+        <a routerLink="/dashboard" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }"
+          class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">
           Dashboard
         </a>
 
-        <a routerLink="/dashboard-crm" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">
+        <a routerLink="/dashboard-crm" routerLinkActive="bg-white/10 text-white"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">
           Dashboard CRM
+        </a>
+        <a routerLink="/reservas" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }"
+          class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">
+          Reservas
+        </a>
+
+        <a routerLink="/notificaciones" routerLinkActive="bg-white/10 text-white"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">
+          Notificaciones
         </a>
 
         @if (puedeVer(['Administrador', 'Mesero', 'Cocinero', 'Supervisor'])) {
-          <a routerLink="/pedidos" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Pedidos</a>
+        <a routerLink="/pedidos" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }"
+          class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Pedidos</a>
         }
 
         @if (puedeVer(['Administrador', 'Mesero', 'Supervisor'])) {
-          <a routerLink="/mesas" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Mesas</a>
+        <a routerLink="/mesas" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }"
+          class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Mesas</a>
         }
 
         @if (puedeVer(['Administrador', 'Supervisor'])) {
-          <a routerLink="/productos" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Productos</a>
-          <a routerLink="/categorias" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Categorias</a>
-          <a routerLink="/inventario" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Inventario</a>
+        <a routerLink="/productos" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }"
+          class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Productos</a>
+        <a routerLink="/categorias" routerLinkActive="bg-white/10 text-white"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Categorias</a>
+        <a routerLink="/inventario" routerLinkActive="bg-white/10 text-white"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Inventario</a>
         }
 
         @if (puedeVer(['Administrador', 'Cajero', 'Supervisor'])) {
-          <a routerLink="/ventas" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Ventas</a>
+        <a routerLink="/ventas" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }"
+          class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Ventas</a>
         }
 
         @if (puedeVer(['Administrador'])) {
-          <a routerLink="/usuarios" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Usuarios</a>
-          <a routerLink="/roles" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }" class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Roles</a>
+        <a routerLink="/usuarios" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }"
+          class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Usuarios</a>
+        <a routerLink="/roles" routerLinkActive="bg-white/10 text-white" [routerLinkActiveOptions]="{ exact: true }"
+          class="block rounded-md px-3 py-2.5 text-slate-300 transition hover:bg-white/10 hover:text-white">Roles</a>
         }
       </nav>
 
@@ -56,7 +79,8 @@
   </aside>
 
   <div class="lg:pl-72">
-    <header class="sticky top-0 z-20 border-b border-slate-200 bg-white/95 px-4 py-4 shadow-sm backdrop-blur sm:px-6 lg:px-8">
+    <header
+      class="sticky top-0 z-20 border-b border-slate-200 bg-white/95 px-4 py-4 shadow-sm backdrop-blur sm:px-6 lg:px-8">
       <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 class="text-xl font-semibold tracking-tight text-slate-950">Sistema Restaurante</h1>

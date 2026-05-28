@@ -101,6 +101,16 @@ export const routes: Routes = [
         path: 'dashboard-crm',
         loadComponent: () =>
           import('./features/dashboard-crm/dashboard-crm').then(m => m.DashboardCrm)
+      },
+      {
+        path: 'reservas',
+        loadComponent: () =>
+          import('./features/reservas/reservas').then(m => m.Reservas)
+      },
+      {
+        path: 'notificaciones',
+        loadComponent: () =>
+          import('./features/notificaciones/notificaciones').then(m => m.Notificaciones)
       }
     ]
   },

@@ -1,0 +1,59 @@
+:host {
+  display: block;
+}
+
+.kpi-card {
+  border-radius: .5rem;
+  background: white;
+  padding: 1.25rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  border: 1px solid #e2e8f0;
+
+  span {
+    color: #64748b;
+    font-weight: 800;
+  }
+
+  strong {
+    display: block;
+    margin-top: .75rem;
+    font-size: 2rem;
+    color: #17213f;
+  }
+
+  p {
+    margin: .25rem 0 0;
+    color: #94a3b8;
+  }
+
+  &.warning {
+    border-color: #facc15;
+
+    strong {
+      color: #b45309;
+    }
+  }
+
+  &.success {
+    border-color: #86efac;
+
+    strong {
+      color: #15803d;
+    }
+  }
+
+  &.danger {
+    border-color: #fecaca;
+
+    strong {
+      color: #b91c1c;
+    }
+  }
+}
+
+:host ::ng-deep .badge-secondary,
+.badge-secondary {
+  background: #f1f5f9;
+  color: #475569;
+  box-shadow: inset 0 0 0 1px #cbd5e1;
+}
