@@ -8,40 +8,47 @@
 
   @if (data) {
     <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-      <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+      <a routerLink="/pedidos" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
         <span class="text-sm font-medium text-slate-500">Total pedidos</span>
         <strong class="mt-3 block text-3xl font-semibold text-slate-950">{{ data.totalPedidos }}</strong>
-      </div>
+        <span class="mt-4 inline-flex text-sm font-bold text-cyan-700 group-hover:text-cyan-800">Ir a Pedidos</span>
+      </a>
 
-      <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+      <a routerLink="/pedidos" class="group rounded-lg border border-amber-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md">
         <span class="text-sm font-medium text-slate-500">Pedidos pendientes</span>
         <strong class="mt-3 block text-3xl font-semibold text-amber-700">{{ data.pedidosPendientes }}</strong>
-      </div>
+        <span class="mt-4 inline-flex text-sm font-bold text-amber-700 group-hover:text-amber-800">Ver pendientes</span>
+      </a>
 
-      <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+      <a routerLink="/pedidos" class="group rounded-lg border border-emerald-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md">
         <span class="text-sm font-medium text-slate-500">Pedidos entregados</span>
         <strong class="mt-3 block text-3xl font-semibold text-emerald-700">{{ data.pedidosEntregados }}</strong>
-      </div>
+        <span class="mt-4 inline-flex text-sm font-bold text-emerald-700 group-hover:text-emerald-800">Ir a Pedidos</span>
+      </a>
 
-      <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+      <a routerLink="/mesas" class="group rounded-lg border border-cyan-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-md">
         <span class="text-sm font-medium text-slate-500">Mesas ocupadas</span>
         <strong class="mt-3 block text-3xl font-semibold text-cyan-700">{{ data.mesasOcupadas }}</strong>
-      </div>
+        <span class="mt-4 inline-flex text-sm font-bold text-cyan-700 group-hover:text-cyan-800">Ir a Mesas</span>
+      </a>
 
-      <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+      <a routerLink="/mesas" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md">
         <span class="text-sm font-medium text-slate-500">Mesas disponibles</span>
         <strong class="mt-3 block text-3xl font-semibold text-slate-950">{{ data.mesasDisponibles }}</strong>
-      </div>
+        <span class="mt-4 inline-flex text-sm font-bold text-cyan-700 group-hover:text-cyan-800">Ir a Mesas</span>
+      </a>
 
-      <div class="rounded-lg border border-red-200 bg-white p-5 shadow-sm">
+      <a routerLink="/inventario" class="group rounded-lg border border-red-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-red-300 hover:shadow-md">
         <span class="text-sm font-medium text-slate-500">Productos con stock bajo</span>
         <strong class="mt-3 block text-3xl font-semibold text-red-700">{{ data.productosStockBajo }}</strong>
-      </div>
+        <span class="mt-4 inline-flex text-sm font-bold text-red-700 group-hover:text-red-800">Ir a Inventario</span>
+      </a>
 
-      <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm md:col-span-2">
+      <a routerLink="/ventas" class="group rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md md:col-span-2">
         <span class="text-sm font-medium text-slate-500">Ventas totales</span>
         <strong class="mt-3 block text-3xl font-semibold text-slate-950">{{ data.ventasTotales | currency:'PEN':'S/ ' }}</strong>
-      </div>
+        <span class="mt-4 inline-flex text-sm font-bold text-cyan-700 group-hover:text-cyan-800">Ir a Ventas</span>
+      </a>
     </section>
 
     <section class="dashboard-charts">

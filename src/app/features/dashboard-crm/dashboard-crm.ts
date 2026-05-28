@@ -1,5 +1,6 @@
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { DashboardCrm as DashboardCrmData } from './dominio/DashboardCRM';
 import { DashboardCrmService } from '../../core/services/dashboard-crm';
@@ -7,7 +8,7 @@ import { DashboardCrmService } from '../../core/services/dashboard-crm';
 @Component({
   selector: 'app-dashboard-crm',
   standalone: true,
-  imports: [CurrencyPipe, DecimalPipe],
+  imports: [CurrencyPipe, DecimalPipe, RouterLink],
   templateUrl: './dashboard-crm.html',
   styleUrl: './dashboard-crm.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
