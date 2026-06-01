@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Client, IMessage } from '@stomp/stompjs';
 import { Notificacion } from '../models/notification';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class WebsocketNotificacionService {
       const SockJS = (await import('sockjs-client')).default as any;
 
       this.stompClient = new Client({
-        webSocketFactory: () => new SockJS('http://localhost:8080/ws-notificaciones'),
+        webSocketFactory: () => new SockJS(environment.wsUrl),
         reconnectDelay: 5000,
 
         onConnect: () => {

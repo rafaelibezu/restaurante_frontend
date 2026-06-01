@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Fidelizacion, FidelizacionRequest } from '../models/fidelizacion';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FidelizacionService {
 
-  private apiUrl = 'http://localhost:8080/api/fidelizacion';
+  private apiUrl = `${environment.apiUrl}/fidelizacion`;
 
   constructor(private http: HttpClient) {}
 

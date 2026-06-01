@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DashboardCrm } from '../../features/dashboard-crm/dominio/DashboardCRM';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardCrmService {
-  private apiUrl = 'http://localhost:8080/api/dashboard/crm';
+  private apiUrl = `${environment.apiUrl}/dashboard/crm`;
 
   constructor(private http: HttpClient) {}
 
