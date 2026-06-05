@@ -44,7 +44,9 @@
           <div class="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{{ error }}</div>
         }
 
-        <button class="btn btn-primary mt-2 w-full" type="submit">Ingresar</button>
+        <button class="btn btn-primary mt-2 w-full" type="submit" [disabled]="cargando">
+          {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+        </button>
       </form>
     </section>
   </div>
