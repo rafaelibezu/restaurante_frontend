@@ -1,13 +1,13 @@
 <div class="min-h-screen bg-[#f7f4ef] text-slate-900">
-  <header class="sticky top-0 z-50 border-b border-white/40 bg-white/80 backdrop-blur-xl">
-    <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-      <a routerLink="/cliente" class="flex items-center gap-3">
-        <div class="grid h-11 w-11 place-items-center rounded-2xl bg-[#d6a84f] text-xl text-white shadow-lg">
-          🍽️
+  <header class="sticky top-0 z-50 border-b border-white/40 bg-white/85 backdrop-blur-xl">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4">
+      <a routerLink="/cliente" class="flex min-w-0 items-center gap-3" (click)="cerrarMenu()">
+        <div class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[#d6a84f] text-xl font-black text-white shadow-lg">
+          R
         </div>
-        <div>
-          <h1 class="text-lg font-extrabold tracking-tight text-[#17213f]">Restaurante Casa LoLa</h1>
-          <p class="text-xs font-medium text-slate-500">Experiencia gastronómica</p>
+        <div class="min-w-0">
+          <h1 class="truncate text-base font-extrabold tracking-tight text-[#17213f] sm:text-lg">Restaurante Casa LoLa</h1>
+          <p class="text-xs font-medium text-slate-500">Experiencia gastronomica</p>
         </div>
       </a>
 
@@ -19,7 +19,29 @@
           Panel interno
         </a>
       </div>
+
+      <button class="public-menu-btn md:hidden" type="button" [attr.aria-expanded]="menuAbierto" aria-label="Abrir menu" (click)="alternarMenu()">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          @if (!menuAbierto) {
+            <path d="M4 6h16" />
+            <path d="M4 12h16" />
+            <path d="M4 18h16" />
+          } @else {
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          }
+        </svg>
+      </button>
     </nav>
+
+    @if (menuAbierto) {
+      <div class="mobile-public-menu md:hidden">
+        <a routerLink="/cliente" (click)="cerrarMenu()">Inicio</a>
+        <a routerLink="/cliente/promociones" (click)="cerrarMenu()">Promociones</a>
+        <a routerLink="/cliente/reservar" (click)="cerrarMenu()">Reservar mesa</a>
+        <a routerLink="/login" class="internal-link" (click)="cerrarMenu()">Panel interno</a>
+      </div>
+    }
   </header>
 
   <main>
@@ -27,10 +49,10 @@
   </main>
 
   <footer class="border-t border-slate-200 bg-white">
-    <div class="mx-auto grid max-w-7xl gap-4 px-6 py-8 text-sm text-slate-500 md:grid-cols-3">
-      <p>© 2026 Restaurante Casa LoLa</p>
-      <p class="md:text-center">Reservas, promociones y atención personalizada.</p>
-      <p class="md:text-right">Lima, Perú</p>
+    <div class="mx-auto grid max-w-7xl gap-4 px-4 py-8 text-sm text-slate-500 sm:px-6 md:grid-cols-3">
+      <p>2026 Restaurante Casa LoLa</p>
+      <p class="md:text-center">Reservas, promociones y atencion personalizada.</p>
+      <p class="md:text-right">Lima, Peru</p>
     </div>
   </footer>
 </div>

@@ -20,6 +20,13 @@ export class AdminLayout implements OnInit, OnDestroy {
 
   notificacionesPendientes: Notificacion[] = [];
   mostrarPanelNotificaciones = false;
+  menuMovilAbierto = false;
+  seccionesAbiertas: Record<string, boolean> = {
+    operacion: true,
+    clientes: false,
+    administracion: false,
+    seguridad: false
+  };
   private wsSubscription?: Subscription;
 
   constructor(
@@ -76,6 +83,21 @@ export class AdminLayout implements OnInit, OnDestroy {
   irANotificaciones(): void {
     this.mostrarPanelNotificaciones = false;
     this.router.navigate(['/notificaciones']);
+  }
+
+  alternarMenuMovil(): void {
+    this.menuMovilAbierto = !this.menuMovilAbierto;
+    if (this.menuMovilAbierto) {
+      this.mostrarPanelNotificaciones = false;
+    }
+  }
+
+  cerrarMenuMovil(): void {
+    this.menuMovilAbierto = false;
+  }
+
+  alternarSeccion(seccion: string): void {
+    this.seccionesAbiertas[seccion] = !this.seccionesAbiertas[seccion];
   }
 
   logout(): void {

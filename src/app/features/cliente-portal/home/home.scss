@@ -1,3 +1,55 @@
 :host {
   display: block;
 }
+
+.home-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #f7f4ef;
+}
+
+.home-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(247, 244, 239, .98) 0%, rgba(247, 244, 239, .9) 47%, rgba(247, 244, 239, .58) 100%),
+    url('/assets/img/restaurante_banner.jpg') center / cover no-repeat;
+}
+
+.hero-photo {
+  position: relative;
+  min-height: 360px;
+  border-radius: 1rem;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, .1), rgba(15, 23, 42, .7)),
+    url('/assets/img/restaurante_banner.jpg') center / cover no-repeat;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, .18);
+}
+
+.reservation-mini {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  border-radius: .85rem;
+  border: 1px solid rgba(255, 255, 255, .2);
+  background: rgba(23, 33, 63, .82);
+  padding: 1.25rem;
+  backdrop-filter: blur(12px);
+}
+
+@media (max-width: 1023px) {
+  .home-hero::before {
+    opacity: .22;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-photo {
+    min-height: 280px;
+  }
+}
